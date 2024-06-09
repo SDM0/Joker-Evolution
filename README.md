@@ -1,4 +1,4 @@
-# Joker-Evolution
+# Joker Evolution
 A Balatro mod made by **SDM_0** which gives an evolution to a few jokers.
 
 Contains an API as well as an example mod to create your own evolutions.
