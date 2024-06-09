@@ -1,0 +1,70 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+
+# Localization color
+
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = "red = G.C.RED,"
+position = "before"
+payload = "evo = G.C.RARITY['evo'],"
+match_indent = true
+
+
+# Add amount tooltip to vanilla joker
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if specific_vars and specific_vars.pinned then info_queue[#info_queue+1] = {key = 'pinned_left', set = 'Other'} end"
+position = "before"
+payload = """
+if has_evo(_c) then info_queue[#info_queue + 1] = set_evo_tooltip(_c) end
+"""
+match_indent = true
+
+
+# Add evolution attributes
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "self.added_to_deck = true"
+position = "after"
+payload = """
+evo = self:get_card_evolution()
+if self.ability.set == "Joker" and evo then
+	self.ability.can_evolve = false
+    self.ability.amount = evo.amount
+end
+"""
+match_indent = true
+
+
+# Superstar main_end text
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.name == 'Joker' then loc_vars = {self.ability.mult}"
+position = "after"
+payload = """
+evo = self:get_card_evolution()
+elseif self.ability.name == "Superstar" then
+	local has_message= (G.GAME and self.area and (self.area == G.jokers))
+    if has_message then
+        local disableable = G.GAME.blind and ((not G.GAME.blind.disabled) and (G.GAME.blind:get_type() == 'Boss'))
+        main_end = {
+            {n=G.UIT.C, config={align = "bm", minh = 0.4}, nodes={
+                {n=G.UIT.C, config={ref_table = self, align = "m", colour = disableable and G.C.GREEN or G.C.RED, r = 0.05, padding = 0.06}, nodes={
+                    {n=G.UIT.T, config={text = ' '..localize(disableable and 'k_active' or 'ph_no_boss_active')..' ',colour = G.C.UI.TEXT_LIGHT, scale = 0.32*0.9}},
+                }}
+            }}
+        }
+    end
+"""
+match_indent = true
