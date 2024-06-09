@@ -438,8 +438,8 @@ SMODS.Joker{
 		end
 	end,
 	calculate_evo = function(self, card, context)
-		if context.individual and not context.end_of_round and context.cardarea == G.hand then
-			if not context.other_card.debuff then
+		if context.cardarea == G.play then
+			if context.individual and not context.other_card.debuff then
 				card:decrement_evo_condition()
 			end
 		end
