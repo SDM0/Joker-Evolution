@@ -68,3 +68,18 @@ elseif self.ability.name == "Superstar" then
     end
 """
 match_indent = true
+
+
+# Pre_reroll context
+
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = "ease_dollars(-G.GAME.current_round.reroll_cost)"
+position = "after"
+payload = """
+for i = 1, #G.jokers.cards do
+    G.jokers.cards[i]:calculate_joker({je_prereroll_shop = true})
+end
+"""
+match_indent = true

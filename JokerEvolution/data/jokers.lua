@@ -139,11 +139,11 @@ SMODS.Joker{
 		if context.ending_shop then
 			card.ability.extra = 3
 		end
-		if context.reroll_shop then
-			if G.GAME.current_round.reroll_cost > 0 and card.ability.extra > 0 then
+		if context.je_prereroll_shop then
+			if not (G.GAME.current_round.reroll_cost <= 0 or G.GAME.current_round.free_rerolls > 0) and card.ability.extra > 0 then
 				card.ability.extra = card.ability.extra - 1
 				card_eval_status_text(card, 'extra', nil, nil, nil, {message = {'' .. card.ability.extra}, colour = G.C.GREEN})
-				ease_dollars(G.GAME.current_round.reroll_cost - 1)
+				ease_dollars(G.GAME.current_round.reroll_cost)
             end
 		end
 	end,
@@ -159,7 +159,7 @@ SMODS.Joker{
 	atlas = "je_jokers"
 }
 
-JokerEvolution.evolutions:add_evolution("j_chaos", "j_evo_bordel", 10)
+JokerEvolution.evolutions:add_evolution("j_chaos", "j_evo_bordel", 12)
 
 -- Monolith (Obelisk evolution)
 
