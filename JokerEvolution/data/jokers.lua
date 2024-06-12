@@ -318,7 +318,7 @@ SMODS.Joker{
 		end
 	end,
 	calculate_evo = function(self, card, context)
-		if context.unsing_consumeable then
+		if context.using_consumeable then
 			if context.consumeable.ability.set == "Tarot" then
 				card:decrement_evo_condition()
 			end
