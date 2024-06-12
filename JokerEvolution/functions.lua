@@ -97,6 +97,20 @@ function Card:evolve_card()
 				j_evo = create_card_alt('Joker', G.jokers, nil, nil, nil, nil, final_evo.evo)
 			end
 
+			if self.ability.eternal then
+				j_evo.ability.eternal = true
+			end
+			if self.ability.perishable then
+				j_evo.ability.perishable = true
+				j_evo.ability.perish_tally = self.ability.perish_tally or G.GAME.perishable_rounds
+			end
+			if self.ability.rental then
+				j_evo.ability.rental = true
+			end
+			if self.pinned then
+				j_evo.pinned = true
+			end
+
 			if final_evo.carry_stat then
 				for _, val in ipairs(final_evo.carry_stat) do
 					if self[val] then
