@@ -7,7 +7,7 @@
 --- BADGE_COLOUR: 18cadc
 --- DISPLAY_NAME: Joker Evolution
 --- PREFIX: evo
---- VERSION: 1.0.0e
+--- VERSION: 1.0.0f
 --- LOADER_VERSION_GEQ: 1.0.0 
 
 ----------------------------------------------
