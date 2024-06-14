@@ -90,7 +90,7 @@ SMODS.Joker{
 					func = (function()
 							local _card = create_card('Spectral',G.consumeables, nil, nil, nil, nil, nil, 'rdv')
 							_card:add_to_deck()
-							G.consumeables:emplace(card)
+							G.consumeables:emplace(_card)
 							G.GAME.consumeable_buffer = 0
 						return true
 					end)}))
