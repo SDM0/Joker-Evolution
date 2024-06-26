@@ -83,3 +83,67 @@ for i = 1, #G.jokers.cards do
 end
 """
 match_indent = true
+
+# Calculate "Idea" joker
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if context.open_booster then"
+position = "before"
+payload = """
+if self.ability.name == "Idea" then
+    local other_joker = G.jokers.cards[#G.jokers.cards]
+    if other_joker and other_joker ~= self then
+        context.blueprint = (context.blueprint and (context.blueprint + 1)) or 1
+        context.blueprint_card = context.blueprint_card or self
+        if context.blueprint > #G.jokers.cards + 1 then return end
+        local other_joker_ret = other_joker:calculate_joker(context)
+        if other_joker_ret then 
+            other_joker_ret.card = context.blueprint_card or self
+            other_joker_ret.colour = G.C.RED
+            return other_joker_ret
+        end
+    end
+end
+"""
+match_indent = true
+
+# "Idea" joker compatibility 1
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "elseif self.ability.name == 'Brainstorm' then"
+position = "before"
+payload = """
+elseif self.ability.name == 'Idea' then
+    self.ability.blueprint_compat_ui = self.ability.blueprint_compat_ui or ''; self.ability.blueprint_compat_check = nil
+    main_end = (self.area and self.area == G.jokers) and {
+        {n=G.UIT.C, config={align = "bm", minh = 0.4}, nodes={
+            {n=G.UIT.C, config={ref_table = self, align = "m", colour = G.C.JOKER_GREY, r = 0.05, padding = 0.06, func = 'blueprint_compat'}, nodes={
+                {n=G.UIT.T, config={ref_table = self.ability, ref_value = 'blueprint_compat_ui',colour = G.C.UI.TEXT_LIGHT, scale = 0.32*0.8}},
+            }}
+        }}
+    } or nil
+"""
+match_indent = true
+
+# "Idea" joker compatibility 2
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.name == 'Blueprint' or self.ability.name == 'Brainstorm' then"
+position = "before"
+payload = """
+if self.ability.name == 'Idea' then
+    local other_joker = G.jokers.cards[#G.jokers.cards]
+    if other_joker and other_joker ~= self and other_joker.config.center.blueprint_compat then
+        self.ability.blueprint_compat = 'compatible'
+    else
+        self.ability.blueprint_compat = 'incompatible'
+    end
+end
+"""
+match_indent = true

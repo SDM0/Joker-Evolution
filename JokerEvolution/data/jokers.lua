@@ -563,62 +563,27 @@ SMODS.Joker{
 	atlas = "je_jokers",
 }
 
--- Implementation (WIP)
+JokerEvolution.evolutions:add_evolution("j_diet_cola", "j_evo_full_sugar_cola", 2)
+
+-- Idea
 
 SMODS.Joker{
-	key = "implementation",
-	name = "Implementation",
+	key = "idea",
+	name = "Idea",
 	rarity = "evo",
 	blueprint_compat = true,
 	pos = {x = 0, y = 0},
 	cost = 20,
 	loc_txt = {
-		name = "Implementation",
+		name = "Idea",
 		text = {
-			"Copies ability of",
-			"{C:attention}Joker{} to the left",
-			"and to the right"
+			"Copies the ability",
+			"of rightmost {C:attention}Joker"
 		},
 	},
-	loc_vars = function(self, info_queue, card)
-		info_queue[#info_queue+1] = {key = "tag_double", set = "Tag"}
-		return {vars = {localize{type = 'name_text', set = 'Tag', key = 'tag_double', nodes = {}}}}
-	end,
-	calculate = function(self, card, context)
-        local left_joker, right_joker = nil
-        for i = 1, #G.jokers.cards do
-            if G.jokers.cards[i] == self then
-				left_joker = G.jokers.cards[i-1]
-				right_joker = G.jokers.cards[i+1]
-			end
-        end
-		-- if left and right
-		-- else
-        if right_joker and right_joker ~= self then
-            context.blueprint = (context.blueprint and (context.blueprint + 1)) or 1
-            context.blueprint_card = context.blueprint_card or self
-            if context.blueprint > #G.jokers.cards + 1 then return end
-            local right_joker_ret = right_joker:calculate_joker(context)
-            if right_joker_ret then 
-                right_joker_ret.card = context.blueprint_card or self
-                right_joker_ret.colour = G.C.BLUE
-                return right_joker_ret
-            end
-        end
-		if left_joker and left_joker ~= self then
-            context.blueprint = (context.blueprint and (context.blueprint + 1)) or 1
-            context.blueprint_card = context.blueprint_card or self
-            if context.blueprint > #G.jokers.cards + 1 then return end
-            local right_joker_ret = right_joker:calculate_joker(context)
-            if right_joker_ret then 
-                right_joker_ret.card = context.blueprint_card or self
-                right_joker_ret.colour = G.C.BLUE
-                return right_joker_ret
-            end
-        end
-	end,
+	-- calculate function in lovely patch
 	calculate_evo = function(self, card, context)
-		if context.skip_blind then
+		if context.buying_card then
 			card:decrement_evo_condition()
 		end
 	end,
@@ -629,6 +594,12 @@ SMODS.Joker{
 	atlas = "je_jokers",
 }
 
-JokerEvolution.evolutions:add_evolution("j_diet_cola", "j_evo_full_sugar_cola", 2)
+JokerEvolution.evolutions:add_evolution("j_brainstorm", "j_evo_idea", 1)
+
+--- Potential future evo:
+-- Campfire
+-- Acrobat
+-- Driver's Licence
+-- Delayed Gratification
 
 return
