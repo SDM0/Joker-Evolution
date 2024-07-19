@@ -83,3 +83,17 @@ for i = 1, #G.jokers.cards do
 end
 """
 match_indent = true
+
+
+# "Ripple" joker scoring
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "scoring_hand[i] = G.play.cards[i]"
+position = "after"
+payload = """
+        elseif next(find_joker('Ripple')) then
+            scoring_hand[i] = G.play.cards[i]
+"""
+match_indent = false

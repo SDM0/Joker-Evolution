@@ -7,7 +7,7 @@
 --- BADGE_COLOUR: 18cadc
 --- DISPLAY_NAME: Joker Evolution
 --- PREFIX: evo
---- VERSION: 1.0.0f
+--- VERSION: 1.0.1a
 --- LOADER_VERSION_GEQ: 1.0.0 
 
 ----------------------------------------------
@@ -42,6 +42,7 @@ NFS.load(JokerEvolution_Mod.path.."overrides.lua")()
 NFS.load(JokerEvolution_Mod.path.."functions.lua")()
 
 NFS.load(JokerEvolution_Mod.path.."data/jokers.lua")()
+NFS.load(JokerEvolution_Mod.path.."data/consumables.lua")()
 
 ----------------------------------------------
 ------------MOD CODE END----------------------

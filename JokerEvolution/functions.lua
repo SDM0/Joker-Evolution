@@ -9,7 +9,6 @@ end
 
 function JokerEvolution.evolutions:add_evolution(joker, evolved_joker, amount, carry_stat)
     table.insert(self, {key = joker, evo = evolved_joker, amount = amount, carry_stat = carry_stat})
-	sendDebugMessage(G.P_CENTERS[joker].amount)
 end
 
 function has_evo(c)
@@ -44,7 +43,7 @@ function Card:can_evolve_card()
 		if not self.debuff and exists and all_jokers and self.ability.can_evolve then
 			return true
 		end
-	end 
+	end
     return false
 end
 
@@ -90,52 +89,56 @@ function Card:evolve_card()
 		end}))
 		delay(0.2)
 		G.E_MANAGER:add_event(Event({trigger = 'immediate', func = function()
-			local j_evo = nil
-			if self.edition then
-				j_evo = create_card_alt('Joker', G.jokers, nil, nil, nil, nil, final_evo.evo, nil, true, self.edition)
-			else
-				j_evo = create_card_alt('Joker', G.jokers, nil, nil, nil, nil, final_evo.evo)
-			end
-
-			if self.ability.eternal then
-				j_evo.ability.eternal = true
-			end
-			if self.ability.perishable then
-				j_evo.ability.perishable = true
-				j_evo.ability.perish_tally = self.ability.perish_tally or G.GAME.perishable_rounds
-			end
-			if self.ability.rental then
-				j_evo.ability.rental = true
-			end
-			if self.pinned then
-				j_evo.pinned = true
-			end
+			local carry_stat = {ability = {extra = {}}}
 
 			if final_evo.carry_stat then
 				for _, val in ipairs(final_evo.carry_stat) do
 					if self[val] then
-						j_evo[val] = self[val]
+						carry_stat[val] = self[val]
 					end
 					if self.ability[val] ~= nil then
-						j_evo.ability[val] = self.ability[val]
+						carry_stat.ability[val] = self.ability[val]
 					end
 					if self.ability.extra and type(self.ability.extra) ~= "table" then
-						j_evo.ability.extra = self.ability.extra
+						carry_stat.ability.extra = self.ability.extra
 					elseif self.ability.extra and self.ability.extra[val] ~= nil then
-						j_evo.ability.extra[val] = self.ability.extra[val]
+						carry_stat.ability.extra[val] = self.ability.extra[val]
+					end
+				end
+			end
+			
+			self:start_materialize({G.C.MONEY}, true)
+			play_sound('explosion_release1')
+			self:juice_up(0.3, 0.5)
+			self:set_ability(G.P_CENTERS[final_evo.evo], true)
+
+			if final_evo.carry_stat then
+				for _, val in ipairs(final_evo.carry_stat) do
+					if carry_stat[val] then
+						self[val] = carry_stat[val]
+					end
+					if carry_stat.ability[val] ~= nil then
+						self.ability[val] = carry_stat.ability[val]
+					end
+					if carry_stat.ability.extra and type(carry_stat.ability.extra) ~= "table" then
+						self.ability.extra = carry_stat.ability.extra
+					elseif carry_stat.ability.extra and carry_stat.ability.extra[val] ~= nil then
+						self.ability.extra[val] = carry_stat.ability.extra[val]
 					end
 				end
 			end
 
-			self:start_dissolve({G.C.GOLD})
-			
+			self:highlight(false)
+
+			G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.3, blocking = false, func = function()
+				card_eval_status_text(self, 'extra', nil, nil, nil, {message = "Evolved!", colour = G.C.MONEY})
+				return true
+			end}))
+
+			set_evo_count()
+
 			delay(0.1)
 
-			j_evo:add_to_deck()
-			G.jokers:emplace(j_evo)
-			play_sound('explosion_release1')
-
-			delay(0.1)
 			G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.3, blocking = false,
 			func = function()
 				G.E_MANAGER:add_event(Event({trigger = 'immediate',
@@ -193,19 +196,24 @@ G.FUNCS.evolve_card = function(e)
 end
 
 G.FUNCS.can_evolve_card = function(e)
-    if e.config.ref_table:can_evolve_card() then 
-        e.config.colour = G.C.GOLD
-        e.config.button = 'evolve_card'
+	if (G.play and #G.play.cards > 0) or
+	(G.CONTROLLER.locked) or 
+	(G.GAME.STOP_USE and G.GAME.STOP_USE > 0) or
+	not e.config.ref_table:can_evolve_card()
+	then
+		e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+		e.config.button = nil
     else
-      	e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-      	e.config.button = nil
+		e.config.colour = G.C.GOLD
+		e.config.button = 'evolve_card'
     end
 end
+
+-- Pseudo-overrides
 
 function create_card_alt(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append, edition_append, forced_edition)
     local area = area or G.jokers
     local center = G.P_CENTERS.b_red
-        
 
     --should pool be skipped with a forced key
     if not forced_key and soulable and (not G.GAME.banned_keys['c_soul']) then

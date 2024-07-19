@@ -5,6 +5,8 @@ SMODS.Atlas{
     py = 95
 }
 
+-- Evolved Jokers
+
 -- Astronaut Joker (Space Joker evolution)
 
 SMODS.Joker{
@@ -12,7 +14,7 @@ SMODS.Joker{
 	name = "Astronaut Joker",
 	rarity = "evo",
 	blueprint_compat = true,
-	pos = {x = 0, y = 0},
+	pos = {x = 1, y = 0},
 	cost = 10,
 	config = {extra = 4},
 	loc_txt = {
@@ -65,7 +67,7 @@ SMODS.Joker{
 	name = "Rendez-Vous",
 	rarity = "evo",
 	blueprint_compat = true,
-	pos = {x = 1, y = 0},
+	pos = {x = 2, y = 0},
 	cost = 12,
 	config = {extra = {poker_hand = 'Straight'}},
 	loc_txt = {
@@ -122,7 +124,7 @@ SMODS.Joker{
 	key = "bordel",
 	name = "Bordel the Buffon",
 	rarity = "evo",
-	pos = {x = 2, y = 0},
+	pos = {x = 3, y = 0},
 	cost = 8,
 	config = {extra = 3},
 	loc_txt = {
@@ -169,7 +171,7 @@ SMODS.Joker{
 	rarity = "evo",
 	blueprint_compat = true,
 	perishable_compat = false,
-	pos = {x = 3, y = 0},
+	pos = {x = 4, y = 0},
 	cost = 16,
 	config = {extra = 0.2, Xmult = 1},
 	loc_txt = {
@@ -227,7 +229,7 @@ SMODS.Joker{
 	key = "superstar",
 	name = "Superstar",
 	rarity = "evo",
-	pos = {x = 4, y = 0},
+	pos = {x = 5, y = 0},
 	cost = 10,
 	loc_txt = {
 		name = "Superstar",
@@ -286,7 +288,7 @@ SMODS.Joker{
 	name = "Tarotologist",
 	rarity = "evo",
 	blueprint_compat = true,
-	pos = {x = 5, y = 0},
+	pos = {x = 6, y = 0},
 	cost = 10,
 	loc_txt = {
 		name = "Tarotologist",
@@ -340,7 +342,7 @@ SMODS.Joker{
 	name = "VIP Card",
 	rarity = "evo",
 	blueprint_compat = true,
-	pos = {x = 6, y = 0},
+	pos = {x = 7, y = 0},
 	cost = 12,
 	config = {extra = {Xmult = 4, every = 3, remaining = "3 remaining"}},
 	loc_txt = {
@@ -404,7 +406,7 @@ SMODS.Joker{
 	name = "Clenched Fist",
 	rarity = "evo",
 	blueprint_compat = true,
-	pos = {x = 7, y = 0},
+	pos = {x = 8, y = 0},
 	cost = 10,
 	loc_txt = {
 		name = "Clenched Fist",
@@ -451,7 +453,7 @@ SMODS.Joker{
 	atlas = "je_jokers",
 }
 
-JokerEvolution.evolutions:add_evolution("j_raised_fist", "j_evo_clenched_fist", 50)
+JokerEvolution.evolutions:add_evolution("j_raised_fist", "j_evo_clenched_fist", 30)
 
 -- Ninefold Joy (Cloud Nine evolution)
 
@@ -460,7 +462,7 @@ SMODS.Joker{
 	name = "Ninefold Joy",
 	rarity = "evo",
 	blueprint_compat = true,
-	pos = {x = 8, y = 0},
+	pos = {x = 9, y = 0},
 	cost = 10,
 	config = {extra = 0},
 	loc_txt = {
@@ -510,14 +512,14 @@ SMODS.Joker{
 
 JokerEvolution.evolutions:add_evolution("j_cloud_9", "j_evo_ninefold_joy", 9)
 
--- Full-Sugar Cola
+-- Full-Sugar Cola (Diet Cola evolution)
 
 SMODS.Joker{
 	key = "full_sugar_cola",
 	name = "Full-Sugar Cola",
 	rarity = "evo",
 	blueprint_compat = true,
-	pos = {x = 9, y = 0},
+	pos = {x = 0, y = 1},
 	cost = 12,
 	loc_txt = {
 		name = "Full-Sugar Cola",
