@@ -73,6 +73,42 @@ function JokerEvolution_Mod.process_loc_text()
             "{C:inactive}({C:attention}#1#{C:inactive}/#2#)"
         }
     }
+    G.localization.descriptions.Other.je_j_campfire = {
+        name = "Evolution",
+        text = {
+            "Sell {C:attention}#2#{} cards",
+            "{C:inactive}({C:attention}#1#{C:inactive}/#2#)"
+        }
+    }
+    G.localization.descriptions.Other.je_j_acrobat = {
+        name = "Evolution",
+        text = {
+            "Play your final hand {C:attention}#2#{} times",
+            "{C:inactive}({C:attention}#1#{C:inactive}/#2#)"
+        }
+    }
+    G.localization.descriptions.Other.je_j_drivers_license = {
+        name = "Evolution",
+        text = {
+            "Add {C:attention}#2#{} cards to your deck",
+            "{C:inactive}({C:attention}#1#{C:inactive}/#2#)"
+        }
+    }
+    G.localization.descriptions.Other.je_j_delayed_grat = {
+        name = "Evolution",
+        text = {
+            "Win {C:attention}#2#{} rounds without discarding",
+            "{C:inactive}({C:attention}#1#{C:inactive}/#2#)"
+        }
+    }
+    G.localization.descriptions.Other.je_j_splash = {
+        name = "Evolution",
+        text = {
+            "Score {C:attention}#2#{} hands with extra cards",
+            "{C:inactive}(ex: Pair with 5 cards)",
+            "{C:inactive}({C:attention}#1#{C:inactive}/#2#)"
+        }
+    }
 end
 
 return

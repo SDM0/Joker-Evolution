@@ -7,6 +7,11 @@ local function has_joker(e)
 	return -1
 end
 
+function set_evo_count()
+	G.GAME.evolution_total = G.GAME.evolution_total or 0
+	G.GAME.evolution_total = G.GAME.evolution_total + 1
+end
+
 function JokerEvolution.evolutions:add_evolution(joker, evolved_joker, amount, carry_stat)
     table.insert(self, {key = joker, evo = evolved_joker, amount = amount, carry_stat = carry_stat})
 end

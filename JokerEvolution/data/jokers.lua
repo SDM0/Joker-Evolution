@@ -567,4 +567,329 @@ SMODS.Joker{
 
 JokerEvolution.evolutions:add_evolution("j_diet_cola", "j_evo_full_sugar_cola", 2)
 
+-- Camp Stove (Campfire evolution)
+
+SMODS.Joker{
+	key = "camp_stove",
+	name = "Camp Stove",
+	rarity = "evo",
+	blueprint_compat = true,
+	perishable_compat = false,
+	pos = {x = 0, y = 0},
+	cost = 18,
+	config = {extra = 0.25},
+	loc_txt = {
+		name = "Camp Stove",
+		text = {
+			"This Joker gains {X:mult,C:white}X#1#{} Mult",
+			"for each card {C:attention}sold{}, loses",
+			"{X:mult,C:white}X1{} Mult after {C:attention}Boss Blind{}",
+			"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
+		}
+	},
+	loc_vars = function(self, info_queue, card)
+		return {vars = {card.ability.extra, card.ability.x_mult}}
+	end,
+	calculate = function(self, card, context)
+		if context.selling_card and not context.blueprint then
+			card.ability.x_mult = card.ability.x_mult + card.ability.extra
+			G.E_MANAGER:add_event(Event({
+				func = function() card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')}); return true
+			end}))
+			return
+		end
+		if context.end_of_round and not (context.individual or context.repetition or context.blueprint) and G.GAME.blind.boss and card.ability.x_mult > 1 then
+			card.ability.x_mult = math.max(card.ability.x_mult -1, 1)
+			return {
+				message = "-X1 Mult",
+				colour = G.C.RED
+			}
+		end
+	end,
+	calculate_evo = function(self, card, context)
+		if context.selling_card then
+			card:decrement_evo_condition()
+		end
+	end,
+	set_card_type_badge = function(self, card, badges)
+		local card_type_colour = get_type_colour(card.config.center or card.config, card)
+		badges[#badges + 1] = create_badge("Evolved",card_type_colour, nil, 1.2)
+	end,
+	atlas = "je_jokers",
+}
+
+JokerEvolution.evolutions:add_evolution("j_campfire", "j_evo_camp_stove", 10, {'x_mult'})
+
+-- Aerialist (Acrobat evolution)
+
+SMODS.Joker{
+	key = "aerialist",
+	name = "Aerialist",
+	rarity = "evo",
+	blueprint_compat = true,
+	pos = {x = 0, y = 0},
+	cost = 12,
+	config = {extra = 3},
+	loc_txt = {
+		name = "Aerialist",
+		text = {
+			"{X:red,C:white} X#1# {} Mult on {C:attention}first",
+			"{C:attention}hand{} of round"
+		},
+	},
+	loc_vars = function(self, info_queue, card)
+		return {vars = {card.ability.extra}}
+	end,
+	calculate = function(self, card, context)
+		if context.joker_main and G.GAME.current_round.hands_played == 0 then
+			return {
+				message = localize{type='variable',key='a_xmult',vars={card.ability.extra}},
+				Xmult_mod = card.ability.extra
+			}
+		end
+	end,
+	calculate_evo = function(self, card, context)
+		if context.end_of_round and not (context.individual or context.repetition) and G.GAME.current_round.hands_left == 0 then
+			card:decrement_evo_condition()
+		end
+	end,
+	set_card_type_badge = function(self, card, badges)
+		local card_type_colour = get_type_colour(card.config.center or card.config, card)
+		badges[#badges + 1] = create_badge("Evolved",card_type_colour, nil, 1.2)
+	end,
+	atlas = "je_jokers",
+}
+
+JokerEvolution.evolutions:add_evolution("j_acrobat", "j_evo_aerialist", 4)
+
+-- Passport Card (Driver's Licence evolution)
+
+SMODS.Joker{
+	key = "passport_card",
+	name = "Passport Card",
+	rarity = "evo",
+	blueprint_compat = true,
+	pos = {x = 0, y = 0},
+	cost = 14,
+	config = {extra = {Xmult = 1, Xmult_mod = 0.75}},
+	loc_txt = {
+		name = "Passport Card",
+		text = {
+			"{X:mult,C:white} X#1# {} Mult for every",
+			"{C:attention}4{} Enhanced cards",
+			"in your full deck",
+			"{C:inactive}(Currently {C:attention}#2#{C:inactive}, {X:mult,C:white} X#3# {C:inactive} Mult)"
+		},
+	},
+	loc_vars = function(self, info_queue, card)
+		return {vars = {card.ability.extra.Xmult_mod, card.ability.passport_tally, card.ability.extra.Xmult or "1"}}
+	end,
+	calculate = function(self, card, context)
+		if context.joker_main and card.ability.extra.Xmult > 1 then
+			return {
+				message = localize{type='variable',key='a_xmult',vars={card.ability.extra.Xmult}},
+				Xmult_mod = card.ability.extra.Xmult
+			}
+		end
+	end,
+	calculate_evo = function(self, card, context)
+		if context.playing_card_added then
+			card:decrement_evo_condition()
+		end
+	end,
+	update = function(self, card, dt)
+		card.ability.passport_tally = 0
+		if G.playing_cards then
+			for k, v in pairs(G.playing_cards) do
+				if v.config.center ~= G.P_CENTERS.c_base then
+					card.ability.passport_tally = card.ability.passport_tally + 1
+				end
+			end
+			if card.ability.passport_tally > 0 and card.ability.passport_tally % 4 == 0 then
+				card.ability.extra.Xmult = math.floor(card.ability.passport_tally / 4) * card.ability.extra.Xmult_mod
+			end
+		end
+	end,
+	set_card_type_badge = function(self, card, badges)
+		local card_type_colour = get_type_colour(card.config.center or card.config, card)
+		badges[#badges + 1] = create_badge("Evolved",card_type_colour, nil, 1.2)
+	end,
+	atlas = "je_jokers",
+}
+
+JokerEvolution.evolutions:add_evolution("j_drivers_license", "j_evo_passport_card", 8)
+
+-- Short-Term Satisfaction (Delayed Gratification evolution)
+
+SMODS.Joker{
+	key = "short_term_satisfaction",
+	name = "Short-Term Satisfaction",
+	rarity = "evo",
+	pos = {x = 0, y = 0},
+	cost = 8,
+	config = {extra = 2},
+	loc_txt = {
+		name = "Short-Term Satisfaction",
+		text = {
+			"Earn {C:money}$#1#{} per {C:attention}discard{} left",
+			"by end of the round"
+		}
+	},
+	loc_vars = function(self, info_queue, card)
+		return {vars = {card.ability.extra}}
+	end,
+	calc_dollar_bonus = function(self, card)
+		if G.GAME.current_round.discards_left > 0 then
+            return G.GAME.current_round.discards_left * card.ability.extra
+		end
+	end,
+	calculate_evo = function(self, card, context)
+		if context.end_of_round and not (context.individual or context.repetition) and G.GAME.current_round.discards_used == 0 then
+			card:decrement_evo_condition()
+		end
+	end,
+	set_card_type_badge = function(self, card, badges)
+		local card_type_colour = get_type_colour(card.config.center or card.config, card)
+		badges[#badges + 1] = create_badge("Evolved",card_type_colour, nil, 1.2)
+	end,
+	atlas = "je_jokers",
+}
+
+JokerEvolution.evolutions:add_evolution("j_delayed_grat", "j_evo_short_term_satisfaction", 3)
+
+-- Ripple (Splash evolution)
+
+SMODS.Joker{
+	key = "ripple",
+	name = "Ripple",
+	rarity = "evo",
+	blueprint_compat = true,
+	pos = {x = 0, y = 0},
+	cost = 6,
+	config = {extra = 5},
+	loc_txt = {
+		name = "Ripple",
+		text = {
+			"Every {C:attention}played card",
+			"counts in scoring",
+			"{C:red}+#1#{} Mult per {C:attention}extra{}",
+			"scored cards",
+			"{C:inactive}(ex: Pair with 5 cards)",
+		}
+	},
+	loc_vars = function(self, info_queue, card)
+		return {vars = {card.ability.extra}}
+	end,
+	calculate = function(self, card, context)
+		if context.joker_main then
+			local size = 0
+			local hand_size = {
+				["Flush Five"] = 5,
+				["Flush House"] = 5,
+				["Five of a Kind"] = 5,
+				["Straight Flush"] = 5,
+				["Four of a Kind"] = 4,
+				["Full House"] = 5,
+				["Flush"] = 5,
+				["Straight"] = 5,
+				["Three of a Kind"] = 3,
+				["Two Pair"] = 4,
+				["Pair"] = 2,
+				["High Card"] = 1,
+			}
+			for k, v in pairs(hand_size) do
+				if context.scoring_name == k then
+					if (k == "Flush Five" or k == "Flush House" or k == "Straight Flush"
+					or k == "Flush" or k == "Straight") and next(find_joker('Shorcut')) then
+						size = v - 1
+					else
+						size = v
+					end
+					break
+				end
+			end
+			if #context.scoring_hand > size then
+				return {
+                    message = localize{type='variable',key='a_mult',vars={(#context.scoring_hand - size) * card.ability.extra}},
+                    mult_mod = card.ability.extra
+                }
+			end
+		end
+	end,
+	calculate_evo = function(self, card, context)
+		if context.joker_main then
+			local size = 0
+			local hand_size = {
+				["Flush Five"] = 5,
+				["Flush House"] = 5,
+				["Five of a Kind"] = 5,
+				["Straight Flush"] = 5,
+				["Four of a Kind"] = 4,
+				["Full House"] = 5,
+				["Flush"] = 5,
+				["Straight"] = 5,
+				["Three of a Kind"] = 3,
+				["Two Pair"] = 4,
+				["Pair"] = 2,
+				["High Card"] = 1,
+			}
+			for k, v in pairs(hand_size) do
+				if context.scoring_name == k then
+					if (k == "Flush Five" or k == "Flush House" or k == "Straight Flush"
+					or k == "Flush" or k == "Straight") and next(find_joker('Shorcut')) then
+						size = v - 1
+					else
+						size = v
+					end
+					break
+				end
+			end
+			if #context.scoring_hand > size then
+				card:decrement_evo_condition()
+			end
+		end
+	end,
+	set_card_type_badge = function(self, card, badges)
+		local card_type_colour = get_type_colour(card.config.center or card.config, card)
+		badges[#badges + 1] = create_badge("Evolved",card_type_colour, nil, 1.2)
+	end,
+	atlas = "je_jokers",
+}
+
+JokerEvolution.evolutions:add_evolution("j_splash", "j_evo_ripple", 10)
+
+-- Other Jokers
+
+-- Collector Joker
+
+SMODS.Joker{
+	key = "collector",
+	name = "Collector Joker",
+	rarity = 3,
+	blueprint_compat = true,
+	pos = {x = 0, y = 0},
+	cost = 8,
+	config = {extra = 1},
+	loc_txt = {
+		name = "Collector Joker",
+		text = {
+			"{X:red,C:white}X#1#{} Mult for each",
+			"{C:attention}evolution{} made this run",
+			"{C:inactive}(Currently {X:red,C:white}X#2#{C:inactive} Mult)",
+		}
+	},
+	loc_vars = function(self, info_queue, card)
+		return {vars = {card.ability.extra, (G.GAME.evolution_total and G.GAME.evolution_total + 1) or 1}}
+	end,
+	calculate = function(self, card, context)
+		if context.joker_main and (G.GAME.evolution_total and G.GAME.evolution_total + 1 > 1) then
+			return {
+				message = localize{type='variable',key='a_xmult',vars={G.GAME.evolution_total + 1}},
+				Xmult_mod = G.GAME.evolution_total + 1
+			}
+		end
+	end,
+	atlas = "je_jokers",
+}
+
 return
