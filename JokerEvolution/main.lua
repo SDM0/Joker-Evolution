@@ -2,12 +2,12 @@
 --- MOD_NAME: Joker Evolution
 --- MOD_ID: joker_evolution
 --- MOD_AUTHOR: [SDM_0]
---- MOD_DESCRIPTION: Gives a few jokers strong evolutions!
+--- MOD_DESCRIPTION: Gives a few jokers strong evolutions! Consumable art by RattlingSnow353
 --- PRIORITY: -1000
 --- BADGE_COLOUR: 18cadc
 --- DISPLAY_NAME: Joker Evolution
 --- PREFIX: evo
---- VERSION: 1.0.1a
+--- VERSION: 1.0.1b
 --- LOADER_VERSION_GEQ: 1.0.0 
 
 ----------------------------------------------
