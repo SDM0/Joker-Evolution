@@ -135,8 +135,6 @@ function Card:evolve_card()
 				return true
 			end}))
 
-			set_evo_count()
-
 			delay(0.1)
 
 			G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.3, blocking = false,
