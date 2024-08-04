@@ -7,7 +7,7 @@
 --- BADGE_COLOUR: 18cadc
 --- DISPLAY_NAME: Joker Evolution
 --- PREFIX: evo
---- VERSION: 1.0.1d
+--- VERSION: 1.0.2a
 --- LOADER_VERSION_GEQ: 1.0.0 
 
 ----------------------------------------------
@@ -37,12 +37,13 @@ function JokerEvolution_Mod.process_loc_text()
     }
 end
 
-NFS.load(JokerEvolution_Mod.path.."localization.lua")()
-NFS.load(JokerEvolution_Mod.path.."overrides.lua")()
-NFS.load(JokerEvolution_Mod.path.."functions.lua")()
+SMODS.load_file("localization.lua")()
+SMODS.load_file("overrides.lua")()
+SMODS.load_file("functions.lua")()
 
-NFS.load(JokerEvolution_Mod.path.."data/jokers.lua")()
-NFS.load(JokerEvolution_Mod.path.."data/consumables.lua")()
+SMODS.load_file("data/example_joker.lua")()
+SMODS.load_file("data/jokers.lua")()
+SMODS.load_file("data/consumables.lua")()
 
 ----------------------------------------------
 ------------MOD CODE END----------------------
