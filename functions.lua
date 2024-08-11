@@ -75,6 +75,8 @@ function Card:evolve_card()
 	end
 
 	if final_evo ~= nil then
+		G.GAME.evolution_total = (G.GAME.evolution_total and G.GAME.evolution_total + 1) or 1
+
 		if G.jokers and G.jokers.cards and #G.jokers.cards > 0 then
 			for i = 0, #G.jokers.cards do
 				if G.jokers.cards[i] ~= nil then

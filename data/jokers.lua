@@ -1049,7 +1049,13 @@ SMODS.Joker{
 		return {vars = {card.ability.extra, (G.GAME.evolution_total and G.GAME.evolution_total + 1) or 1}}
 	end,
 	calculate = function(self, card, context)
-		if context.joker_main and (G.GAME.evolution_total and G.GAME.evolution_total + 1 > 1) then
+		if context.evolution and not context.blueprint then
+			G.E_MANAGER:add_event(Event({func = function()
+				card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_xmult',vars={G.GAME.evolution_total + 1}}});
+				return true
+			end}))
+		end
+		if context.joker_main and (G.GAME.evolution_total and G.GAME.evolution_total > 0) then
 			return {
 				message = localize{type='variable',key='a_xmult',vars={G.GAME.evolution_total + 1}},
 				Xmult_mod = G.GAME.evolution_total + 1
