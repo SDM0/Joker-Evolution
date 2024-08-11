@@ -44,3 +44,13 @@ show when clicking on it, allowing it to evolve.
   | Short-Term Satisfaction | Delayed Gratification | Win 3 rounds without using discards | Earn $2 per discard left by the end of round |
   | Ripple | Splash | Score 8 hands with extra cards | Every played card counts in scoring, +5 Mult per extra scored cards |
 </details>
+
+## List of extra Jokers
+<details>
+  <summary>Spoilers</summary>
+  <br>
+
+  | Joker | Cost | Rarity | Effect | 
+  | :---: | :---: | :---: | :---: |
+  | Collector Joker | 8 | Rare | X1 Mult per evolution done this run |
+</details>
