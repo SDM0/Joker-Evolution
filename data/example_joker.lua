@@ -33,11 +33,11 @@ SMODS.Joker{
 		end
 	end,
 	-- Credits the "Joker Evolution" mod, thank you if you add it to your evolved jokers!
-	set_badges = function(self, card, badges)
+	--[[set_badges = function(self, card, badges)
 		local len = string.len("Joker Evolution")
 		local size = 0.9 - (len > 6 and 0.02*(len-6) or 0)
 		badges[#badges + 1] = create_badge("Joker Evolution", HEX("18cadc"), nil, size)
-	end,
+	end,--]]
 	-- Adds the "Evolved" rarity badge
 	set_card_type_badge = function(self, card, badges)
 		local card_type_colour = get_type_colour(card.config.center or card.config, card)
