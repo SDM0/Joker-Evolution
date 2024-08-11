@@ -179,7 +179,7 @@ SMODS.Joker{
 		return {vars = {card.ability.extra}}
 	end,
 	calculate = function(self, card, context)
-		if context.ending_shop then
+		if context.ending_shop and card.ability.extra < 3 then
 			card_eval_status_text(card, 'extra', nil, nil, nil, {message = {"Refresh!"}, colour = G.C.GREEN})
 			card.ability.extra = 3
 		end
