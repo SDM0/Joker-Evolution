@@ -978,7 +978,7 @@ SMODS.Joker{
 			if #context.scoring_hand > size then
 				return {
                     message = localize{type='variable',key='a_mult',vars={(#context.scoring_hand - size) * card.ability.extra}},
-                    mult_mod = card.ability.extra
+                    mult_mod = (#context.scoring_hand - size) * card.ability.extra
                 }
 			end
 		end
