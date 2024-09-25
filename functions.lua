@@ -178,11 +178,13 @@ end
 function set_evo_tooltip(_c)
 	for _, joker in ipairs(JokerEvolution.evolutions) do
 		if _c.key == joker.key then
-			if G.jokers and G.jokers.cards and #G.jokers.cards > 0 then
+			if (G.jokers and G.jokers.cards and #G.jokers.cards > 0) and Evolution_tooltip_object then -- Evolution_tooltip_object defined in "lovely.toml"
+				local my_pos = nil
 				for i = 1, #G.jokers.cards do
-					if G.jokers.cards[i].config.center.key == joker.key then
-						return {key = "je_" .. joker.key, set = "Other", vars = {joker.amount - math.max(G.jokers.cards[i].ability.amount, 0), joker.amount}}
-					end
+					if G.jokers.cards[i] == Evolution_tooltip_object then my_pos = i; break end
+				end
+				if my_pos then
+					return {key = "je_" .. joker.key, set = "Other", vars = {joker.amount - math.max(G.jokers.cards[my_pos].ability.amount, 0), joker.amount}}
 				end
 			end
 			return {key = "je_" .. joker.key, set = "Other", vars = {0, joker.amount}}

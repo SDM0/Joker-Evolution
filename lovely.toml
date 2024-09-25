@@ -15,12 +15,12 @@ payload = "evo = G.C.RARITY['evo'],"
 match_indent = true
 
 
-# Add amount tooltip to vanilla joker
+# Add amount tooltip to joker
 
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
-pattern = "if specific_vars and specific_vars.pinned then info_queue[#info_queue+1] = {key = 'pinned_left', set = 'Other'} end"
+pattern = "local loc_vars = {}"
 position = "before"
 payload = """
 if has_evo(_c) then info_queue[#info_queue + 1] = set_evo_tooltip(_c) end
@@ -97,3 +97,16 @@ payload = """
             scoring_hand[i] = G.play.cards[i]
 """
 match_indent = false
+
+
+# Adding global var to pass self inside generate_card_ui
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "return generate_card_ui(self.config.center, nil, loc_vars, card_type, badges, hide_desc, main_start, main_end)"
+position = "before"
+payload = """
+Evolution_tooltip_object = self
+"""
+match_indent = true
