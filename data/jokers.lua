@@ -966,8 +966,7 @@ SMODS.Joker{
 			}
 			for k, v in pairs(hand_size) do
 				if context.scoring_name == k then
-					if (k == "Flush Five" or k == "Flush House" or k == "Straight Flush"
-					or k == "Flush" or k == "Straight") and next(find_joker('Shorcut')) then
+					if (k == "Straight Flush" or k == "Flush" or k == "Straight") and SMODS.find_card('j_four_fingers') then
 						size = v - 1
 					else
 						size = v
