@@ -74,7 +74,7 @@ if SMODS.Mods['joker_evolution'] then
     JokerEvolution.evolutions:add_evolution("j_joker", "j_evo_ultimate_joker", 1)
 
 else
-	sendDebugMessage('Please install the "Joker Evolution" mod')
+	sendDebugMessage('Please install the "Joker Evolution" mod') -- You can also add the mod as a dependency in your mod header
 end
 
 return --- No need to add this return if the evolution is in your main mod lua file
