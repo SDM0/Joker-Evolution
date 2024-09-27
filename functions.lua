@@ -183,7 +183,7 @@ function set_evo_tooltip(_c)
 				for i = 1, #G.jokers.cards do
 					if G.jokers.cards[i] == Evolution_tooltip_object then my_pos = i; break end
 				end
-				if my_pos then
+				if my_pos and (G.jokers.cards[my_pos].ability and G.jokers.cards[my_pos].ability.amount) then
 					return {key = "je_" .. joker.key, set = "Other", vars = {joker.amount - math.max(G.jokers.cards[my_pos].ability.amount, 0), joker.amount}}
 				end
 			end
