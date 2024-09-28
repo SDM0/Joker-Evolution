@@ -51,10 +51,6 @@ SMODS.Joker{
 			card:decrement_evo_condition()
 		end
 	end,
-	set_card_type_badge = function(self, card, badges)
-		local card_type_colour = get_type_colour(card.config.center or card.config, card)
-		badges[#badges + 1] = create_badge("Evolved",card_type_colour, nil, 1.2)
-	end,
 	atlas = "je_jokers"
 }
 
@@ -127,10 +123,6 @@ SMODS.Joker{
 			card:decrement_evo_condition()
 		end
 	end,
-	set_card_type_badge = function(self, card, badges)
-		local card_type_colour = get_type_colour(card.config.center or card.config, card)
-		badges[#badges + 1] = create_badge("Evolved",card_type_colour, nil, 1.2)
-	end,
 	atlas = "je_jokers",
 }
 
@@ -195,10 +187,6 @@ SMODS.Joker{
 		if context.reroll_shop then
 			card:decrement_evo_condition()
 		end
-	end,
-	set_card_type_badge = function(self, card, badges)
-		local card_type_colour = get_type_colour(card.config.center or card.config, card)
-		badges[#badges + 1] = create_badge("Evolved",card_type_colour, nil, 1.2)
 	end,
 	atlas = "je_jokers"
 }
@@ -266,10 +254,6 @@ SMODS.Joker{
 		if context.evolution then
 			card:decrement_evo_condition()
 		end
-	end,
-	set_card_type_badge = function(self, card, badges)
-		local card_type_colour = get_type_colour(card.config.center or card.config, card)
-		badges[#badges + 1] = create_badge("Evolved",card_type_colour, nil, 1.2)
 	end,
 	atlas = "je_jokers",
 }
@@ -350,10 +334,6 @@ SMODS.Joker{
 			card:decrement_evo_condition()
 		end
 	end,
-	set_card_type_badge = function(self, card, badges)
-		local card_type_colour = get_type_colour(card.config.center or card.config, card)
-		badges[#badges + 1] = create_badge("Evolved",card_type_colour, nil, 1.2)
-	end,
 	atlas = "je_jokers",
 }
 
@@ -426,10 +406,6 @@ SMODS.Joker{
 			end
 		end
 	end,
-	set_card_type_badge = function(self, card, badges)
-		local card_type_colour = get_type_colour(card.config.center or card.config, card)
-		badges[#badges + 1] = create_badge("Evolved",card_type_colour, nil, 1.2)
-	end,
 	atlas = "je_jokers",
 }
 
@@ -489,10 +465,6 @@ SMODS.Joker{
 				card:decrement_evo_condition()
 			end
 		end
-	end,
-	set_card_type_badge = function(self, card, badges)
-		local card_type_colour = get_type_colour(card.config.center or card.config, card)
-		badges[#badges + 1] = create_badge("Evolved",card_type_colour, nil, 1.2)
 	end,
 	atlas = "je_jokers",
 }
@@ -568,10 +540,6 @@ SMODS.Joker{
 				card:decrement_evo_condition()
 			end
 		end
-	end,
-	set_card_type_badge = function(self, card, badges)
-		local card_type_colour = get_type_colour(card.config.center or card.config, card)
-		badges[#badges + 1] = create_badge("Evolved",card_type_colour, nil, 1.2)
 	end,
 	atlas = "je_jokers",
 }
@@ -654,10 +622,6 @@ SMODS.Joker{
 			return card.ability.extra
 		end
 	end,
-	set_card_type_badge = function(self, card, badges)
-		local card_type_colour = get_type_colour(card.config.center or card.config, card)
-		badges[#badges + 1] = create_badge("Evolved",card_type_colour, nil, 1.2)
-	end,
 	atlas = "je_jokers",
 }
 
@@ -725,10 +689,6 @@ SMODS.Joker{
 			card:decrement_evo_condition()
 		end
 	end,
-	set_card_type_badge = function(self, card, badges)
-		local card_type_colour = get_type_colour(card.config.center or card.config, card)
-		badges[#badges + 1] = create_badge("Evolved",card_type_colour, nil, 1.2)
-	end,
 	atlas = "je_jokers",
 }
 
@@ -778,10 +738,6 @@ SMODS.Joker{
 			card:decrement_evo_condition()
 		end
 	end,
-	set_card_type_badge = function(self, card, badges)
-		local card_type_colour = get_type_colour(card.config.center or card.config, card)
-		badges[#badges + 1] = create_badge("Evolved",card_type_colour, nil, 1.2)
-	end,
 	atlas = "je_jokers",
 }
 
@@ -819,10 +775,6 @@ SMODS.Joker{
 		if context.end_of_round and not (context.individual or context.repetition) and G.GAME.current_round.hands_left == 0 then
 			card:decrement_evo_condition()
 		end
-	end,
-	set_card_type_badge = function(self, card, badges)
-		local card_type_colour = get_type_colour(card.config.center or card.config, card)
-		badges[#badges + 1] = create_badge("Evolved",card_type_colour, nil, 1.2)
 	end,
 	atlas = "je_jokers",
 }
@@ -877,10 +829,6 @@ SMODS.Joker{
 			end
 		end
 	end,
-	set_card_type_badge = function(self, card, badges)
-		local card_type_colour = get_type_colour(card.config.center or card.config, card)
-		badges[#badges + 1] = create_badge("Evolved",card_type_colour, nil, 1.2)
-	end,
 	atlas = "je_jokers",
 }
 
@@ -914,10 +862,6 @@ SMODS.Joker{
 		if context.end_of_round and not (context.individual or context.repetition) and G.GAME.current_round.discards_used == 0 then
 			card:decrement_evo_condition()
 		end
-	end,
-	set_card_type_badge = function(self, card, badges)
-		local card_type_colour = get_type_colour(card.config.center or card.config, card)
-		badges[#badges + 1] = create_badge("Evolved",card_type_colour, nil, 1.2)
 	end,
 	atlas = "je_jokers",
 }
@@ -1014,10 +958,6 @@ SMODS.Joker{
 				card:decrement_evo_condition()
 			end
 		end
-	end,
-	set_card_type_badge = function(self, card, badges)
-		local card_type_colour = get_type_colour(card.config.center or card.config, card)
-		badges[#badges + 1] = create_badge("Evolved",card_type_colour, nil, 1.2)
 	end,
 	atlas = "je_jokers",
 }

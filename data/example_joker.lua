@@ -38,15 +38,10 @@ SMODS.Joker{
 		local size = 0.9 - (len > 6 and 0.02*(len-6) or 0)
 		badges[#badges + 1] = create_badge("Joker Evolution", HEX("18cadc"), nil, size)
 	end,--]]
-	-- Adds the "Evolved" rarity badge
-	set_card_type_badge = function(self, card, badges)
-		local card_type_colour = get_type_colour(card.config.center or card.config, card)
-		badges[#badges + 1] = create_badge("Evolved", card_type_colour, nil, 1.2)
-	end,
 	atlas = "je_jokers"
 }
 
---- Add the evolution condition tooltip to the original joker
+--- Add the evolution condition tooltip to the original joker, you can also write it in your localization folder
 local process_loc_textref = JokerEvolution_Mod.process_loc_text
 function JokerEvolution_Mod.process_loc_text()
     process_loc_textref()

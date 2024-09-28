@@ -23,7 +23,7 @@ target = "functions/common_events.lua"
 pattern = "local loc_vars = {}"
 position = "before"
 payload = """
-if has_evo(_c) then info_queue[#info_queue + 1] = set_evo_tooltip(_c) end
+if has_evo(_c) and not Evolution_tooltip_object.infinifusion then info_queue[#info_queue + 1] = set_evo_tooltip(_c) end
 """
 match_indent = true
 
@@ -41,6 +41,19 @@ if self.ability.set == "Joker" and evo then
 	self.ability.can_evolve = false
     self.ability.amount = evo.amount
 end
+"""
+match_indent = true
+
+
+# Add mod badge to evolved Joker
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "if AUT.card_type == 'Enhanced' then card_type = localize{type = 'name_text', key = card.config.center.key, set = 'Enhanced'} end"
+position = "before"
+payload = """
+if AUT.card_type == 'Joker' and is_evo(card.config.center) then card_type = ({['evo'] = 'Evolved'})[card.config.center.rarity] end
 """
 match_indent = true
 
