@@ -139,7 +139,7 @@ function Card:evolve_card()
 				end
 			end
 
-			self:highlight(false)
+			self.area:remove_from_highlighted(self)
 
 			G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.3, blocking = false, func = function()
 				card_eval_status_text(self, 'extra', nil, nil, nil, {message = "Evolved!", colour = G.C.MONEY})
