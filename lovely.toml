@@ -23,7 +23,7 @@ target = "functions/common_events.lua"
 pattern = "local loc_vars = {}"
 position = "before"
 payload = """
-if has_evo(_c) and not Evolution_tooltip_object.infinifusion then info_queue[#info_queue + 1] = set_evo_tooltip(_c) end
+if has_evo(_c) and Evolution_tooltip_object and not Evolution_tooltip_object.infinifusion then info_queue[#info_queue + 1] = set_evo_tooltip(_c) end
 """
 match_indent = true
 
