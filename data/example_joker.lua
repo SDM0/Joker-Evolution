@@ -32,16 +32,11 @@ SMODS.Joker{
 			card:decrement_evo_condition()	--Helper function from "JokerEvolution" to decrement the requirement count
 		end
 	end,
-	-- Credits the "Joker Evolution" mod, thank you if you add it to your evolved jokers!
-	--[[set_badges = function(self, card, badges)
-		local len = string.len("Joker Evolution")
-		local size = 0.9 - (len > 6 and 0.02*(len-6) or 0)
-		badges[#badges + 1] = create_badge("Joker Evolution", HEX("18cadc"), nil, size)
-	end,--]]
 	atlas = "je_jokers"
 }
 
---- Add the evolution condition tooltip to the original joker, you can also write it in your localization folder
+--- Add the evolution condition tooltip to the original joker,
+--- you can also write it in your localization folder
 local process_loc_textref = JokerEvolution_Mod.process_loc_text
 function JokerEvolution_Mod.process_loc_text()
     process_loc_textref()

@@ -1,38 +1,6 @@
 --function Card:add_to_deck(from_debuff)
 
 -- Custom Rarity setup by MathIsFun
-Game:set_globals()
-G.C.RARITY["evo"] = G.C.GOLD;
-local ip = SMODS.insert_pool
-function SMODS.insert_pool(pool, center, replace)
-    if pool == nil then pool = {} end
-    ip(pool, center, replace)
-end
-local get_badge_colourref = get_badge_colour
-function get_badge_colour(key)
-    local fromRef = get_badge_colourref(key)
-    if key == 'evo' then return G.C.RARITY["evo"] end
-    return fromRef
-end
-local lc = loc_colour
-function loc_colour(_c, _default)
-    if not G.ARGS.LOC_COLOURS then lc() end
-    G.ARGS.LOC_COLOURS.evo = G.C.RARITY['evo']
-    return lc(_c, _default)
-end
-local is = SMODS.injectItems
-function SMODS.injectItems()
-    local m = is()
-    G.P_JOKER_RARITY_POOLS.evo = {}
-    for k, v in pairs(G.P_CENTERS) do
-        v.key = k
-        if v.rarity and v.rarity == 'evo'and v.set == 'Joker' and not v.demo then
-            table.insert(G.P_JOKER_RARITY_POOLS[v.rarity], v)
-        end
-    end
-    return m
-end
-
 local use_and_sell_buttonsref = G.UIDEF.use_and_sell_buttons
 function G.UIDEF.use_and_sell_buttons(card)
 	local retval = use_and_sell_buttonsref(card)

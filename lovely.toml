@@ -3,18 +3,6 @@ version = "1.0.0"
 dump_lua = true
 priority = 0
 
-
-# Localization color
-
-[[patches]]
-[patches.pattern]
-target = "functions/misc_functions.lua"
-pattern = "red = G.C.RED,"
-position = "before"
-payload = "evo = G.C.RARITY['evo'],"
-match_indent = true
-
-
 # Add amount tooltip to joker
 
 [[patches]]
@@ -45,15 +33,20 @@ end
 match_indent = true
 
 
-# Add mod badge to evolved Joker
+# Add mod name badge to evolved Joker
 
 [[patches]]
 [patches.pattern]
 target = "functions/UI_definitions.lua"
-pattern = "if AUT.card_type == 'Enhanced' then card_type = localize{type = 'name_text', key = card.config.center.key, set = 'Enhanced'} end"
+pattern = "if AUT.badges then"
 position = "before"
 payload = """
-if AUT.card_type == 'Joker' and is_evo(card.config.center) then card_type = ({['evo'] = 'Evolved'})[card.config.center.rarity] end
+if obj and (obj.mod and obj.mod.id and not obj.mod.id == "joker_evolution") and is_evo(obj) then
+    sendDebugMessage(inspect(obj.mod))
+    local len = string.len("Joker Evolution")
+    local size = 0.9 - (len > 6 and 0.02*(len-6) or 0)
+    badges[#badges + 1] = create_badge("Joker Evolution", HEX("18cadc"), nil, size)
+end
 """
 match_indent = true
 
