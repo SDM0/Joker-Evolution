@@ -966,42 +966,46 @@ JokerEvolution.evolutions:add_evolution("j_splash", "j_evo_ripple", 8)
 
 -- Other Jokers
 
--- Collector Joker
+if JokerEvolution_Config.enable_mod_jokers then
 
-SMODS.Joker{
-	key = "collector",
-	name = "Collector Joker",
-	rarity = 3,
-	blueprint_compat = true,
-	pos = {x = 6, y = 1},
-	cost = 8,
-	config = {extra = 1},
-	loc_txt = {
+	-- Collector Joker
+
+	SMODS.Joker{
+		key = "collector",
 		name = "Collector Joker",
-		text = {
-			"{X:red,C:white}X#1#{} Mult for each",
-			"{C:attention}evolution{} made this run",
-			"{C:inactive}(Currently {X:red,C:white}X#2#{C:inactive} Mult)",
-		}
-	},
-	loc_vars = function(self, info_queue, card)
-		return {vars = {card.ability.extra, (G.GAME.evolution_total and G.GAME.evolution_total + 1) or 1}}
-	end,
-	calculate = function(self, card, context)
-		if context.evolution and not context.blueprint then
-			G.E_MANAGER:add_event(Event({func = function()
-				card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_xmult',vars={G.GAME.evolution_total + 1}}});
-				return true
-			end}))
-		end
-		if context.joker_main and (G.GAME.evolution_total and G.GAME.evolution_total > 0) then
-			return {
-				message = localize{type='variable',key='a_xmult',vars={G.GAME.evolution_total + 1}},
-				Xmult_mod = G.GAME.evolution_total + 1
+		rarity = 3,
+		blueprint_compat = true,
+		pos = {x = 6, y = 1},
+		cost = 8,
+		config = {extra = 1},
+		loc_txt = {
+			name = "Collector Joker",
+			text = {
+				"{X:red,C:white}X#1#{} Mult for each",
+				"{C:attention}evolution{} made this run",
+				"{C:inactive}(Currently {X:red,C:white}X#2#{C:inactive} Mult)",
 			}
-		end
-	end,
-	atlas = "je_jokers",
-}
+		},
+		loc_vars = function(self, info_queue, card)
+			return {vars = {card.ability.extra, (G.GAME.evolution_total and G.GAME.evolution_total + 1) or 1}}
+		end,
+		calculate = function(self, card, context)
+			if context.evolution and not context.blueprint then
+				G.E_MANAGER:add_event(Event({func = function()
+					card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type='variable',key='a_xmult',vars={G.GAME.evolution_total + 1}}});
+					return true
+				end}))
+			end
+			if context.joker_main and (G.GAME.evolution_total and G.GAME.evolution_total > 0) then
+				return {
+					message = localize{type='variable',key='a_xmult',vars={G.GAME.evolution_total + 1}},
+					Xmult_mod = G.GAME.evolution_total + 1
+				}
+			end
+		end,
+		atlas = "je_jokers",
+	}
+
+end
 
 return
