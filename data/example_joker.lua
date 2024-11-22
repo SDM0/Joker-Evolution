@@ -37,9 +37,7 @@ SMODS.Joker{
 
 --- Add the evolution condition tooltip to the original joker,
 --- you can also write it in your localization folder
-local process_loc_textref = JokerEvolution_Mod.process_loc_text
 function JokerEvolution_Mod.process_loc_text()
-    process_loc_textref()
 	-- G.localization.descriptions.Other.je_ + original joker key
     G.localization.descriptions.Other.je_j_joker = {
         name = "Evolution",
@@ -66,5 +64,3 @@ if SMODS.Mods['joker_evolution'] then
 else
 	sendDebugMessage('Please install the "Joker Evolution" mod') -- You can also add the mod as a dependency in your mod header
 end
-
-return --- No need to add this return if the evolution is in your main mod lua file
