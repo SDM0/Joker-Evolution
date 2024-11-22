@@ -1,7 +1,7 @@
 # Joker Evolution
 A Balatro mod made by **SDM_0** which gives an evolution to a few jokers.
 
-Contains an API as well as an example mod to create your own evolutions.
+Contains an API as well as an example Joker to create your own evolutions.
 
 Inspired of [Fusion Jokers](https://github.com/itayfeder/Fusion-Jokers) by [itayfeder](https://github.com/itayfeder).<br>
 Thanks to [MathIsFun](https://github.com/MathIsFun0) for the help and RattlingSnow353 for the sprite!
@@ -17,6 +17,7 @@ Thanks to [MathIsFun](https://github.com/MathIsFun0) for the help and RattlingSn
 - A condition increases by 1 by default, when the amount of condition is met, the Joker will shake and a button "Evolve" will
 show when clicking on it, allowing it to evolve.
 - A Joker slot isn't required when evolving a Joker.
+- When a Joker evolves, its pre-evolution will not be available (configurable)
 - Editions and badges (eternal/perish/rental/pinned) are kept when evolving.
 - Debuffed Jokers cannot evolve.
 
@@ -42,7 +43,7 @@ show when clicking on it, allowing it to evolve.
   | Aerialist | Acrobat | Score your last hand 4 times | X3 Mult on first hand of round |
   | Pilot's License | Driver's License | Add 8 playing cards | X0.75 Mult for every 4 Enhanced cards in your full deck |
   | Short-Term Satisfaction | Delayed Gratification | Win 3 rounds without using discards | Earn $2 per discard left by the end of round |
-  | Ripple | Splash | Score 8 hands with extra cards | Every played card counts in scoring, +5 Mult per extra scored cards |
+  | Ripple | Splash | Score 6 hands with extra cards | Every played card counts in scoring, +5 Mult per extra scored cards |
 </details>
 
 ## List of extra Jokers
