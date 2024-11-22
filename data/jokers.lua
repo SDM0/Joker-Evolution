@@ -17,15 +17,6 @@ SMODS.Joker{
 	pos = {x = 1, y = 0},
 	cost = 10,
 	config = {extra = 4},
-	loc_txt = {
-		name = "Astronaut Joker",
-		text = {
-            "{C:green}#1# in #2#{} chance to",
-            "upgrade level of most",
-            "played {C:attention}poker hand{}",
-			"when scoring"
-        }
-	},
 	loc_vars = function(self, info_queue, card)
 		return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), card.ability.extra}}
 	end,
@@ -56,24 +47,6 @@ SMODS.Joker{
 
 JokerEvolution.evolutions:add_evolution("j_space", "j_evo_astronaut", 6)
 
-if JokerDisplay then
-	JokerDisplay.Definitions["j_evo_astronaut"] = {
-		extra = {
-			{
-				{ text = "(" },
-				{ ref_table = "card.joker_display_values",                    ref_value = "odds" },
-				{ text = " in " },
-				{ ref_table = "card.ability",                    ref_value = "extra" },
-				{ text = ")" },
-			}
-		},
-		extra_config = { colour = G.C.GREEN, scale = 0.3 },
-		calc_function = function(card)
-			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
-		end
-	}
-end
-
 -- Rendez-vous (Séance evolution)
 
 SMODS.Joker{
@@ -84,15 +57,6 @@ SMODS.Joker{
 	pos = {x = 2, y = 0},
 	cost = 12,
 	config = {extra = {poker_hand = 'Straight'}},
-	loc_txt = {
-		name = "Rendez-Vous",
-		text = {
-			"If {C:attention}poker hand{} is a",
-			"{C:attention}#1#{}, create a",
-			"random {C:spectral}Spectral{} card",
-			"{C:inactive}(Must have room)"
-		}
-	},
 	loc_vars = function(self, info_queue, card)
 		return {vars = {localize(card.ability.extra.poker_hand, 'poker_hands')}}
 	end,
@@ -128,28 +92,6 @@ SMODS.Joker{
 
 JokerEvolution.evolutions:add_evolution("j_seance", "j_evo_rendezvous", 2)
 
-if JokerDisplay then
-	JokerDisplay.Definitions["j_evo_rendezvous"] = {
-		text = {
-			{ text = "+" },
-			{ ref_table = "card.joker_display_values", ref_value = "count" },
-		},
-		text_config = { colour = G.C.SECONDARY_SET.Spectral },
-		reminder_text = {
-			{ text = "(" },
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
-			{ text = ")" },
-		},
-		calc_function = function(card)
-			local text, poker_hands, scoring_hand = JokerDisplay.evaluate_hand()
-			local is_seance_hand = text == card.ability.extra.poker_hand
-
-			card.joker_display_values.count = is_seance_hand and 1 or 0
-			card.joker_display_values.localized_text = localize(card.ability.extra.poker_hand, 'poker_hands')
-		end
-	}
-end
-
 -- Bordel the Buffon (Chaos the Clown evolution)
 
 SMODS.Joker{
@@ -159,14 +101,6 @@ SMODS.Joker{
 	pos = {x = 3, y = 0},
 	cost = 8,
 	config = {extra = 3},
-	loc_txt = {
-		name = "Bordel the Buffon",
-		text = {
-			"Each round, next {C:attention}3{} {C:green}rerolls{}",
-			"are refunded",
-			"{C:inactive}(Currently {C:green}#1#{C:inactive})"
-		}
-	},
 	loc_vars = function(self, info_queue, card)
 		return {vars = {card.ability.extra}}
 	end,
@@ -193,17 +127,6 @@ SMODS.Joker{
 
 JokerEvolution.evolutions:add_evolution("j_chaos", "j_evo_bordel", 10)
 
-if JokerDisplay then
-	JokerDisplay.Definitions["j_evo_bordel"] = {
-		reminder_text = {
-			{ text = "(" },
-			{ ref_table = "card.ability", ref_value = "extra", colour = G.C.GREEN },
-			{ text = ")" },
-		},
-		reminder_text_config = {scale = 0.35}
-	}
-end
-
 -- Monolith (Obelisk evolution)
 
 SMODS.Joker{
@@ -215,16 +138,6 @@ SMODS.Joker{
 	pos = {x = 4, y = 0},
 	cost = 16,
 	config = {extra = 0.2, Xmult = 1},
-	loc_txt = {
-		name = "Monolith",
-		text = {
-			"This Joker gains {X:mult,C:white} X#1# {} Mult",
-			"per {C:attention}consecutive{} hand played,",
-			"reduced by {X:mult,C:white}X1{} if playing",
-			"your most played {C:attention}poker hand",
-			"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
-		}
-	},
 	loc_vars = function(self, info_queue, card)
 		return {vars = {card.ability.extra, card.ability.x_mult}}
 	end,
@@ -260,31 +173,6 @@ SMODS.Joker{
 
 JokerEvolution.evolutions:add_evolution("j_obelisk", "j_evo_monolith", 1, {'x_mult'})
 
-if JokerDisplay then
-	JokerDisplay.Definitions["j_evo_monolith"] = {
-		text = {
-            {
-                border_nodes = {
-                    { text = "X" },
-                    { ref_table = "card.joker_display_values", ref_value = "x_mult" }
-                }
-            }
-        },
-        calc_function = function(card)
-            local hand = G.hand.highlighted
-            local text, _, _ = JokerDisplay.evaluate_hand(hand)
-            local play_more_than = 0
-            for k, v in pairs(G.GAME.hands) do
-                if v.played and v.played >= play_more_than and v.visible then
-                    play_more_than = v.played
-                end
-            end
-            local hand_exists = text ~= 'Unknown' and G.GAME and G.GAME.hands and G.GAME.hands[text]
-            card.joker_display_values.x_mult = (hand_exists and (G.GAME.hands[text].played >= play_more_than and math.max(1, card.ability.x_mult - 1) or card.ability.x_mult + card.ability.extra) or card.ability.x_mult)
-        end
-	}
-end
-
 -- Superstar (Luchador evolution)
 
 SMODS.Joker{
@@ -293,21 +181,12 @@ SMODS.Joker{
 	rarity = "evo",
 	pos = {x = 5, y = 0},
 	cost = 10,
-	loc_txt = {
-		name = "Superstar",
-		text = {
-			"Sell this card to",
-			"disable the current",
-			"{C:attention}Boss Blind{} and create",
-			"a {C:attention}Luchador{} card",
-		}
-	},
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = {key = "luchador", set = "Other"}
 	end,
 	calculate = function(self, card, context)
 		if context.selling_self and not context.blueprint then
-			if G.GAME.blind and ((not G.GAME.blind.disabled) and (G.GAME.blind:get_type() == 'Boss')) then 
+			if G.GAME.blind and ((not G.GAME.blind.disabled) and (G.GAME.blind:get_type() == 'Boss')) then
 				card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('ph_boss_disabled')})
 				G.GAME.blind:disable()
 			end
@@ -325,8 +204,8 @@ SMODS.Joker{
                     _card:start_materialize()
                     G.GAME.joker_buffer = 0
                     return true
-                end}))   
-            card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.BLUE}) 
+                end}))
+            card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_plus_joker'), colour = G.C.BLUE})
 		end
 	end,
 	calculate_evo = function(self, card, context)
@@ -339,28 +218,6 @@ SMODS.Joker{
 
 JokerEvolution.evolutions:add_evolution("j_luchador", "j_evo_superstar", 2)
 
-if JokerDisplay then
-	JokerDisplay.Definitions["j_evo_superstar"] = {
-		reminder_text = {
-            { ref_table = "card.joker_display_values", ref_value = "active_text" },
-        },
-        calc_function = function(card)
-            local disableable = G.GAME and G.GAME.blind and G.GAME.blind.get_type and
-                ((not G.GAME.blind.disabled) and (G.GAME.blind:get_type() == 'Boss'))
-            card.joker_display_values.active = disableable
-            card.joker_display_values.active_text = localize(disableable and 'k_active' or 'ph_no_boss_active')
-        end,
-        style_function = function(card, text, reminder_text, extra)
-            if reminder_text and reminder_text.children[1] then
-                reminder_text.children[1].config.colour = card.joker_display_values.active and G.C.GREEN or G.C.RED
-                reminder_text.children[1].config.scale = card.joker_display_values.active and 0.35 or 0.3
-                return true
-            end
-            return false
-        end
-	}
-end
-
 -- Tarotologist (Cartomancer evolution)
 
 SMODS.Joker{
@@ -370,14 +227,6 @@ SMODS.Joker{
 	blueprint_compat = true,
 	pos = {x = 6, y = 0},
 	cost = 10,
-	loc_txt = {
-		name = "Tarotologist",
-		text = {
-			"Create {C:attention}2{} {C:tarot}Tarot{} cards",
-			"when {C:attention}Blind{} is selected",
-			"{C:inactive}(Must have room)"
-		},
-	},
 	calculate = function(self, card, context)
 		if context.setting_blind and not (context.blueprint_card or card).getting_sliced and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
 			local tarots_to_create = math.min(2, G.consumeables.config.card_limit - (#G.consumeables.cards + G.GAME.consumeable_buffer))
@@ -393,8 +242,8 @@ SMODS.Joker{
 							G.GAME.consumeable_buffer = G.GAME.consumeable_buffer - 1
 						end
 						return true
-					end}))   
-					card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_tarot'), colour = G.C.PURPLE})                       
+					end}))
+					card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_plus_tarot'), colour = G.C.PURPLE})
 				return true
 			end)}))
 		end
@@ -421,14 +270,6 @@ SMODS.Joker{
 	pos = {x = 7, y = 0},
 	cost = 12,
 	config = {extra = {Xmult = 4, every = 3, remaining = "3 remaining"}},
-	loc_txt = {
-		name = "VIP Card",
-		text = {
-			"{X:red,C:white} X#1# {} Mult every",
-			"{C:attention}#2#{} hands played",
-			"{C:inactive}#3#"
-		}
-	},
 	loc_vars = function(self, info_queue, card)
 		return {vars = {card.ability.extra.Xmult, card.ability.extra.every + 1, localize{type = 'variable', key = (card.ability.loyalty_remaining == 0 and 'loyalty_active' or 'loyalty_inactive'), vars = {card.ability.loyalty_remaining}}}}
 	end,
@@ -471,29 +312,6 @@ SMODS.Joker{
 
 JokerEvolution.evolutions:add_evolution("j_loyalty_card", "j_evo_vip_card", 4)
 
-if JokerDisplay then
-	JokerDisplay.Definitions["j_evo_vip_card"] = {
-		text = {
-            {
-                border_nodes = {
-                    { text = "X" },
-                    { ref_table = "card.joker_display_values", ref_value = "x_mult" }
-                }
-            }
-        },
-        reminder_text = {
-            { text = "(" },
-            { ref_table = "card.joker_display_values", ref_value = "loyalty_text" },
-            { text = ")" },
-        },
-        calc_function = function(card)
-            local loyalty_remaining = card.ability.loyalty_remaining + (next(G.play.cards) and 1 or 0)
-            card.joker_display_values.loyalty_text = localize { type = 'variable', key = (loyalty_remaining % (card.ability.extra.every+1) == 0 and 'loyalty_active' or 'loyalty_inactive'), vars = { loyalty_remaining } }
-            card.joker_display_values.x_mult = (loyalty_remaining % (card.ability.extra.every+1) == 0 and card.ability.extra.Xmult or 1)
-        end
-	}
-end
-
 -- Clenched Fist (Raised Fist evolution)
 
 SMODS.Joker{
@@ -503,14 +321,6 @@ SMODS.Joker{
 	blueprint_compat = true,
 	pos = {x = 8, y = 0},
 	cost = 10,
-	loc_txt = {
-		name = "Clenched Fist",
-		text = {
-			"Adds {C:attention}double{} the rank",
-			"of {C:attention}highest{} ranked card",
-			"held in hand to Mult"
-		}
-	},
 	calculate = function(self, card, context)
 		if not context.end_of_round and context.individual and context.cardarea == G.hand then
 			local temp_mult, temp_ID = 1, 1
@@ -518,7 +328,7 @@ SMODS.Joker{
 			for i=1, #G.hand.cards do
 				if temp_ID <= G.hand.cards[i].base.id and G.hand.cards[i].ability.effect ~= 'Stone Card' then temp_mult = G.hand.cards[i].base.nominal; temp_ID = G.hand.cards[i].base.id; clenched_card = G.hand.cards[i] end
 			end
-			if clenched_card == context.other_card then 
+			if clenched_card == context.other_card then
 				if context.other_card.debuff then
 					return {
 						message = localize('k_debuffed'),
@@ -546,34 +356,6 @@ SMODS.Joker{
 
 JokerEvolution.evolutions:add_evolution("j_raised_fist", "j_evo_clenched_fist", 25)
 
-if JokerDisplay then
-	JokerDisplay.Definitions["j_evo_clenched_fist"] = {
-		text = {
-            { text = "+" },
-            { ref_table = "card.joker_display_values", ref_value = "mult" }
-        },
-        text_config = { colour = G.C.MULT },
-        calc_function = function(card)
-            local temp_Mult, temp_ID = 0, 0
-            local temp_card = nil
-            local retriggers = 1
-            for i = 1, #G.hand.cards do
-                if not G.hand.cards[i].highlighted and temp_ID <= G.hand.cards[i].base.id
-                    and G.hand.cards[i].ability.effect ~= 'Stone Card' then
-                    retriggers = JokerDisplay.calculate_card_triggers(G.hand.cards[i], nil, true)
-                    temp_Mult = G.hand.cards[i].base.nominal
-                    temp_ID = G.hand.cards[i].base.id
-                    temp_card = G.hand.cards[i]
-                end
-            end
-            if not temp_card or temp_card.debuff or temp_card.facing == 'back' then
-                temp_Mult = 0
-            end
-            card.joker_display_values.mult = temp_Mult * 2 * retriggers
-        end
-	}
-end
-
 -- Ninefold Joy (Cloud Nine evolution)
 
 SMODS.Joker{
@@ -584,16 +366,6 @@ SMODS.Joker{
 	pos = {x = 9, y = 0},
 	cost = 10,
 	config = {extra = 0},
-	loc_txt = {
-		name = "Ninefold Joy",
-		text = {
-			"Earn {C:money}$1{} for each {C:attention}9{}",
-			"or {C:money}$2{} for each {C:attention}modified",
-			"{C:attention}9{} in your {C:attention}full deck",
-			"at end of round",
-			"{C:inactive}(Currently {C:money}$#1#{}{C:inactive})"
-		}
-	},
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = {key = "modified_card", set = "Other"}
 		return {vars = {card.ability.extra}}
@@ -627,22 +399,6 @@ SMODS.Joker{
 
 JokerEvolution.evolutions:add_evolution("j_cloud_9", "j_evo_ninefold_joy", 9)
 
-if JokerDisplay then
-	JokerDisplay.Definitions["j_evo_ninefold_joy"] = {
-		text = {
-            { text = "+$" },
-            { ref_table = "card.ability", ref_value = "extra" },
-        },
-        text_config = { colour = G.C.GOLD },
-        reminder_text = {
-            { ref_table = "card.joker_display_values", ref_value = "localized_text" },
-        },
-        calc_function = function(card)
-            card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
-        end
-	}
-end
-
 -- Full-Sugar Cola (Diet Cola evolution)
 
 SMODS.Joker{
@@ -652,14 +408,6 @@ SMODS.Joker{
 	blueprint_compat = true,
 	pos = {x = 0, y = 1},
 	cost = 12,
-	loc_txt = {
-		name = "Full-Sugar Cola",
-		text = {
-			"Sell this card to",
-			"create {C:attention}2{} free",
-			"{C:attention}#1#"
-		}
-	},
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = {key = "tag_double", set = "Tag"}
 		return {vars = {localize{type = 'name_text', set = 'Tag', key = 'tag_double', nodes = {}}}}
@@ -697,7 +445,7 @@ JokerEvolution.evolutions:add_evolution("j_diet_cola", "j_evo_full_sugar_cola", 
 -- Wildfire (Campfire evolution)
 
 SMODS.Joker{
-	key = "Wildfire",
+	key = "wildfire",
 	name = "Wildfire",
 	rarity = "evo",
 	blueprint_compat = true,
@@ -705,15 +453,6 @@ SMODS.Joker{
 	pos = {x = 1, y = 1},
 	cost = 18,
 	config = {extra = 0.25},
-	loc_txt = {
-		name = "Wildfire",
-		text = {
-			"This Joker gains {X:mult,C:white}X#1#{} Mult",
-			"for each card {C:attention}sold{}, loses",
-			"{X:mult,C:white}X1{} Mult after {C:attention}Boss Blind{}",
-			"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)"
-		}
-	},
 	loc_vars = function(self, info_queue, card)
 		return {vars = {card.ability.extra, card.ability.x_mult}}
 	end,
@@ -753,13 +492,6 @@ SMODS.Joker{
 	pos = {x = 2, y = 1},
 	cost = 12,
 	config = {extra = 3},
-	loc_txt = {
-		name = "Aerialist",
-		text = {
-			"{X:red,C:white} X#1# {} Mult on {C:attention}first",
-			"{C:attention}hand{} of round"
-		},
-	},
 	loc_vars = function(self, info_queue, card)
 		return {vars = {card.ability.extra}}
 	end,
@@ -791,15 +523,6 @@ SMODS.Joker{
 	pos = {x = 3, y = 1},
 	cost = 14,
 	config = {extra = {Xmult = 1, Xmult_mod = 0.75}},
-	loc_txt = {
-		name = "Pilot's License",
-		text = {
-			"{X:mult,C:white} X#1# {} Mult for every",
-			"{C:attention}4{} Enhanced cards",
-			"in your full deck",
-			"{C:inactive}(Currently {C:attention}#2#{C:inactive}, {X:mult,C:white} X#3# {C:inactive} Mult)"
-		},
-	},
 	loc_vars = function(self, info_queue, card)
 		return {vars = {card.ability.extra.Xmult_mod, card.ability.passport_tally, card.ability.extra.Xmult or "1"}}
 	end,
@@ -843,13 +566,6 @@ SMODS.Joker{
 	pos = {x = 4, y = 1},
 	cost = 8,
 	config = {extra = 2},
-	loc_txt = {
-		name = "Short-Term Satisfaction",
-		text = {
-			"Earn {C:money}$#1#{} per {C:attention}discard{} left",
-			"by end of the round"
-		}
-	},
 	loc_vars = function(self, info_queue, card)
 		return {vars = {card.ability.extra}}
 	end,
@@ -878,83 +594,24 @@ SMODS.Joker{
 	pos = {x = 5, y = 1},
 	cost = 6,
 	config = {extra = 5},
-	loc_txt = {
-		name = "Ripple",
-		text = {
-			"Every {C:attention}played card",
-			"counts in scoring",
-			"{C:red}+#1#{} Mult per {C:attention}extra{}",
-			"scored cards",
-			"{C:inactive}(ex: Pair with 5 cards)",
-		}
-	},
 	loc_vars = function(self, info_queue, card)
 		return {vars = {card.ability.extra}}
 	end,
 	calculate = function(self, card, context)
 		if context.joker_main then
-			local size = 0
-			local hand_size = {
-				["Flush Five"] = 5,
-				["Flush House"] = 5,
-				["Five of a Kind"] = 5,
-				["Straight Flush"] = 5,
-				["Four of a Kind"] = 4,
-				["Full House"] = 5,
-				["Flush"] = 5,
-				["Straight"] = 5,
-				["Three of a Kind"] = 3,
-				["Two Pair"] = 4,
-				["Pair"] = 2,
-				["High Card"] = 1,
-			}
-			for k, v in pairs(hand_size) do
-				if context.scoring_name == k then
-					if (k == "Straight Flush" or k == "Flush" or k == "Straight") and SMODS.find_card('j_four_fingers') then
-						size = v - 1
-					else
-						size = v
-					end
-					break
-				end
-			end
-			if #context.scoring_hand > size then
+			local _,_,_,scoring_hand,_ = G.FUNCS.get_poker_hand_info(G.play.cards)
+			if #context.scoring_hand > #scoring_hand then
 				return {
-                    message = localize{type='variable',key='a_mult',vars={(#context.scoring_hand - size) * card.ability.extra}},
-                    mult_mod = (#context.scoring_hand - size) * card.ability.extra
+                    message = localize{type='variable',key='a_mult',vars={(#context.scoring_hand - #scoring_hand) * card.ability.extra}},
+                    mult_mod = (#context.scoring_hand - #scoring_hand) * card.ability.extra
                 }
 			end
 		end
 	end,
 	calculate_evo = function(self, card, context)
 		if context.joker_main then
-			local size = 0
-			local hand_size = {
-				["Flush Five"] = 5,
-				["Flush House"] = 5,
-				["Five of a Kind"] = 5,
-				["Straight Flush"] = 5,
-				["Four of a Kind"] = 4,
-				["Full House"] = 5,
-				["Flush"] = 5,
-				["Straight"] = 5,
-				["Three of a Kind"] = 3,
-				["Two Pair"] = 4,
-				["Pair"] = 2,
-				["High Card"] = 1,
-			}
-			for k, v in pairs(hand_size) do
-				if context.scoring_name == k then
-					if (k == "Flush Five" or k == "Flush House" or k == "Straight Flush"
-					or k == "Flush" or k == "Straight") and next(find_joker('Shorcut')) then
-						size = v - 1
-					else
-						size = v
-					end
-					break
-				end
-			end
-			if #context.scoring_hand > size then
+			local _,_,_,scoring_hand,_ = G.FUNCS.get_poker_hand_info(G.play.cards)
+			if #context.scoring_hand > #scoring_hand then
 				card:decrement_evo_condition()
 			end
 		end
@@ -962,7 +619,7 @@ SMODS.Joker{
 	atlas = "je_jokers",
 }
 
-JokerEvolution.evolutions:add_evolution("j_splash", "j_evo_ripple", 8)
+JokerEvolution.evolutions:add_evolution("j_splash", "j_evo_ripple", 5)
 
 -- Other Jokers
 
@@ -978,14 +635,6 @@ if JokerEvolution_Config.enable_mod_jokers then
 		pos = {x = 6, y = 1},
 		cost = 8,
 		config = {extra = 1},
-		loc_txt = {
-			name = "Collector Joker",
-			text = {
-				"{X:red,C:white}X#1#{} Mult for each",
-				"{C:attention}evolution{} made this run",
-				"{C:inactive}(Currently {X:red,C:white}X#2#{C:inactive} Mult)",
-			}
-		},
 		loc_vars = function(self, info_queue, card)
 			return {vars = {card.ability.extra, (G.GAME.evolution_total and G.GAME.evolution_total + 1) or 1}}
 		end,
@@ -1007,5 +656,3 @@ if JokerEvolution_Config.enable_mod_jokers then
 	}
 
 end
-
-return
