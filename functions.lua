@@ -1,6 +1,6 @@
 local function has_joker(e)
 	for k, v in pairs(G.jokers.cards) do
-		if v.ability.set == 'Joker' and v.config.center.key == e then 
+		if v.ability.set == 'Joker' and v.config.center.key == e then
 			return k
 		end
 	end
@@ -62,7 +62,7 @@ function Card:get_card_evolution()
 		if evo.key == self.config.center.key then
 			return evo
 		end
-	end 
+	end
     return false
 end
 
@@ -117,7 +117,7 @@ function Card:evolve_card()
 					end
 				end
 			end
-			
+
 			self:start_materialize({G.C.MONEY}, true)
 			play_sound('explosion_release1')
 			self:juice_up(0.3, 0.5)
@@ -208,7 +208,7 @@ end
 
 G.FUNCS.can_evolve_card = function(e)
 	if (G.play and #G.play.cards > 0) or
-	(G.CONTROLLER.locked) or 
+	(G.CONTROLLER.locked) or
 	(G.GAME.STOP_USE and G.GAME.STOP_USE > 0) or
 	not e.config.ref_table:can_evolve_card()
 	then
@@ -235,20 +235,20 @@ function create_card_alt(_type, area, legendary, _rarity, skip_materialize, soul
             end
         end
         if (_type == 'Planet' or _type == 'Spectral') and
-        not (G.GAME.used_jokers['c_black_hole'] and not next(find_joker("Showman")))  then 
+        not (G.GAME.used_jokers['c_black_hole'] and not next(find_joker("Showman")))  then
             if pseudorandom('soul_'.._type..G.GAME.round_resets.ante) > 0.997 then
                 forced_key = 'c_black_hole'
             end
         end
     end
 
-    if _type == 'Base' then 
+    if _type == 'Base' then
         forced_key = 'c_base'
     end
 
 
 
-    if forced_key and not G.GAME.banned_keys[forced_key] then 
+    if forced_key and not G.GAME.banned_keys[forced_key] then
         center = G.P_CENTERS[forced_key]
         _type = (center.set ~= 'Default' and center.set or _type)
     else
@@ -268,7 +268,7 @@ function create_card_alt(_type, area, legendary, _rarity, skip_materialize, soul
     local card = Card(area.T.x + area.T.w/2, area.T.y, G.CARD_W, G.CARD_H, front, center,
     {bypass_discovery_center = area==G.shop_jokers or area == G.pack_cards or area == G.shop_vouchers or (G.shop_demo and area==G.shop_demo) or area==G.jokers or area==G.consumeables,
      bypass_discovery_ui = area==G.shop_jokers or area == G.pack_cards or area==G.shop_vouchers or (G.shop_demo and area==G.shop_demo),
-     discover = area==G.jokers or area==G.consumeables, 
+     discover = area==G.jokers or area==G.consumeables,
      bypass_back = G.GAME.selected_back.pos})
     if card.ability.consumeable and not skip_materialize then card:start_materialize() end
 
@@ -276,7 +276,7 @@ function create_card_alt(_type, area, legendary, _rarity, skip_materialize, soul
         if G.GAME.modifiers.all_eternal then
             card:set_eternal(true)
         end
-        if (area == G.shop_jokers) or (area == G.pack_cards) then 
+        if (area == G.shop_jokers) or (area == G.pack_cards) then
             local eternal_perishable_poll = pseudorandom((area == G.pack_cards and 'packetper' or 'etperpoll')..G.GAME.round_resets.ante)
             if G.GAME.modifiers.enable_eternals_in_shop and eternal_perishable_poll > 0.7 then
                 card:set_eternal(true)
