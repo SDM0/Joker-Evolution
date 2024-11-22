@@ -6,17 +6,10 @@ SMODS.Atlas{
 }
 
 SMODS.Consumable{
-    key = 'c_evolution',
+    key = 'evolution',
     set = 'Spectral',
     pos = {x = 0, y = 0},
     cost = 4,
-    loc_txt = {
-        name = "Evolution",
-        text = {
-            "{C:attention}Evolves{} a random Joker,",
-            "{C:red}destroys{} a random Joker",
-        }
-    },
     loc_vars = function(self, info_queue, card)
         return {vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), self.config.extra}}
     end,
@@ -66,5 +59,3 @@ SMODS.Consumable{
     end,
     atlas = "je_consus"
 }
-
-return
