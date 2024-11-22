@@ -4,7 +4,6 @@ dump_lua = true
 priority = 0
 
 # Add amount tooltip to joker
-
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
@@ -17,7 +16,6 @@ match_indent = true
 
 
 # Add evolution attributes
-
 [[patches]]
 [patches.pattern]
 target = "card.lua"
@@ -34,7 +32,6 @@ match_indent = true
 
 
 # Add mod name badge to evolved Joker
-
 [[patches]]
 [patches.pattern]
 target = "functions/UI_definitions.lua"
@@ -52,7 +49,6 @@ match_indent = true
 
 
 # Superstar main_end text
-
 [[patches]]
 [patches.pattern]
 target = "card.lua"
@@ -77,7 +73,6 @@ match_indent = true
 
 
 # Pre_reroll context
-
 [[patches]]
 [patches.pattern]
 target = "functions/button_callbacks.lua"
@@ -92,7 +87,6 @@ match_indent = true
 
 
 # "Ripple" joker scoring
-
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
@@ -106,7 +100,6 @@ match_indent = false
 
 
 # Adding global var to pass self inside generate_card_ui
-
 [[patches]]
 [patches.pattern]
 target = "card.lua"
@@ -116,3 +109,22 @@ payload = """
 Evolution_tooltip_object = self
 """
 match_indent = true
+
+# Pre-evo removed from pool if its evolution exists
+[[patches]]
+[patches.regex]
+target = "functions/common_events.lua"
+pattern = '''else\n\s*add = true\n\s*end'''
+position = "after"
+payload = """
+
+if v.set == "Joker" and JokerEvolution_Config.enable_pool_restriction then
+    for _, joker in ipairs(JokerEvolution.evolutions) do
+        if v.key == joker.key and next(SMODS.find_card(joker.evo)) then
+            add = false
+            break
+        end
+    end
+end
+"""
+line_prepend = '$indent'
