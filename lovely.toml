@@ -39,7 +39,6 @@ pattern = "if AUT.badges then"
 position = "before"
 payload = """
 if obj and (obj.mod and obj.mod.id and not obj.mod.id == "joker_evolution") and is_evo(obj) then
-    sendDebugMessage(inspect(obj.mod))
     local len = string.len("Joker Evolution")
     local size = 0.9 - (len > 6 and 0.02*(len-6) or 0)
     badges[#badges + 1] = create_badge("Joker Evolution", HEX("18cadc"), nil, size)
