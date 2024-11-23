@@ -480,7 +480,7 @@ SMODS.Joker{
 	atlas = "je_jokers",
 }
 
-JokerEvolution.evolutions:add_evolution("j_campfire", "j_evo_Wildfire", 15, {'x_mult'})
+JokerEvolution.evolutions:add_evolution("j_campfire", "j_evo_wildfire", 15, {'x_mult'})
 
 -- Aerialist (Acrobat evolution)
 
