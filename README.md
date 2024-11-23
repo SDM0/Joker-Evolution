@@ -4,7 +4,7 @@ A Balatro mod made by **SDM_0** which gives an evolution to a few jokers.
 Contains an API as well as an example Joker to create your own evolutions.
 
 Inspired of [Fusion Jokers](https://github.com/itayfeder/Fusion-Jokers) by [itayfeder](https://github.com/itayfeder).<br>
-Thanks to [MathIsFun](https://github.com/MathIsFun0) for the help and RattlingSnow353 for the sprite!
+Thanks to [MathIsFun](https://github.com/MathIsFun0) for the help and [RattlingSnow353](https://github.com/RattlingSnow353) for the sprite!
 
 ## Installation
 - Requires [Steamodded](https://github.com/Steamopollys/Steamodded/) v1.0.0 or higher (An installation guide is available there)
