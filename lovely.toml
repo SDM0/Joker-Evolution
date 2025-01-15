@@ -97,18 +97,6 @@ payload = """
 """
 match_indent = false
 
-
-# Adding global var to pass self inside generate_card_ui
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = "return generate_card_ui(self.config.center, nil, loc_vars, card_type, badges, hide_desc, main_start, main_end)"
-position = "before"
-payload = """
-Evolution_tooltip_object = self
-"""
-match_indent = true
-
 # Pre-evo removed from pool if its evolution exists
 [[patches]]
 [patches.regex]
