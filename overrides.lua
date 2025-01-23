@@ -29,7 +29,7 @@ function Card:update(dt)
 
 	if G.STAGE == G.STAGES.RUN then
 
-		if self:get_card_evolution() ~= false then
+		if get_card_evolution(self) ~= false then
 			self.ability.evolution = self.ability.evolution or {}
 
 			if self:can_evolve_card() and not self.ability.evolution.jiggle then
@@ -59,6 +59,7 @@ function Card:generate_UIBox_ability_table(vars_only)
 	Evolution_tooltip_object = self
 	return generate_UIBox_ability_tableref(self, vars_only)
 end
+
 
 local level_up_handref = level_up_hand
 function level_up_hand(card, hand, instant, amount)

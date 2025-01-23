@@ -56,10 +56,10 @@ function Card:can_evolve_card()
     return false
 end
 
-function Card:get_card_evolution()
-	if not self.config then print(tprint(self)); return false end --Cryptid failsafe
+function get_card_evolution(card)
+	if not card.config then print(tprint(card)); return false end --Cryptid failsafe
 	for _, evo in ipairs(JokerEvolution.evolutions) do
-		if evo.key == self.config.center.key then
+		if evo.key == card.config.center.key then
 			return evo
 		end
 	end
@@ -171,9 +171,9 @@ function Card:evolve_card()
 end
 
 function Card:calculate_evo(context)
-	if self:get_card_evolution() and not context.blueprint then
+	if get_card_evolution(self) and not context.blueprint then
 		local obj = self.config.center
-		local evol = self:get_card_evolution()
+		local evol = get_card_evolution(self)
 		if not obj.calculate_evo and G.P_CENTERS[evol.evo].calculate_evo then
 			obj.calculate_evo = G.P_CENTERS[evol.evo].calculate_evo
 		end

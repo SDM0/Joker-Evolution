@@ -22,7 +22,7 @@ target = "card.lua"
 pattern = "self.added_to_deck = true"
 position = "after"
 payload = """
-evo = self:get_card_evolution()
+evo = get_card_evolution(self)
 if self.ability.set == "Joker" and evo then
 	self.ability.can_evolve = false
     self.ability.amount = evo.amount
@@ -54,7 +54,7 @@ target = "card.lua"
 pattern = "if self.ability.name == 'Joker' then loc_vars = {self.ability.mult}"
 position = "after"
 payload = """
-evo = self:get_card_evolution()
+evo = get_card_evolution(self)
 elseif self.ability.name == "Superstar" then
 	local has_message= (G.GAME and self.area and (self.area == G.jokers))
     if has_message then
