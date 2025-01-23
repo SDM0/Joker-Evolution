@@ -4,7 +4,7 @@
 local use_and_sell_buttonsref = G.UIDEF.use_and_sell_buttons
 function G.UIDEF.use_and_sell_buttons(card)
 	local retval = use_and_sell_buttonsref(card)
-	if card.area and card.area.config.type == 'joker' and card.ability.set == 'Joker' and card:get_card_evolution() then
+	if card.area and card.area.config.type == 'joker' and card.ability.set == 'Joker' and get_card_evolution(card) then
 		local evolve =
 		{n=G.UIT.C, config={h=0.6, align = "cr"}, nodes={
 		  {n=G.UIT.C, config={ref_table = card, align = "cr",maxw = 1.25, padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.GOLD, one_press = true, button = 'sell_card', func = 'can_evolve_card'}, nodes={
