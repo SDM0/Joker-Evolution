@@ -547,7 +547,7 @@ SMODS.Joker{
 					card.ability.passport_tally = card.ability.passport_tally + 1
 				end
 			end
-			if card.ability.passport_tally > 0 and card.ability.passport_tally % 4 == 0 then
+			if card.ability.passport_tally > 3 then
 				card.ability.extra.Xmult = 1 + (math.floor(card.ability.passport_tally / 4) * card.ability.extra.Xmult_mod)
 			end
 		end
