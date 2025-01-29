@@ -39,6 +39,16 @@ function Card:decrement_evo_condition(amount)
 	end
 end
 
+function Card:set_evo_condition(amount)
+	local amount = amount or 1
+	if self.ability.amount then
+		self.ability.amount = amount
+		if self.ability.amount <= 0 and not self.ability.can_evolve then
+			self.ability.can_evolve = true
+		end
+	end
+end
+
 function Card:can_evolve_card()
 	for _, joker in ipairs(JokerEvolution.evolutions) do
 		local exists = false
@@ -87,10 +97,8 @@ function Card:evolve_card()
 		G.GAME.evolution_total = (G.GAME.evolution_total and G.GAME.evolution_total + 1) or 1
 
 		if G.jokers and G.jokers.cards and #G.jokers.cards > 0 then
-			for i = 0, #G.jokers.cards do
-				if G.jokers.cards[i] ~= nil then
-					G.jokers.cards[i]:calculate_joker({evolution = true})
-				end
+			for i = 1, #G.jokers.cards do
+				G.jokers.cards[i]:calculate_joker({evolution = true})
 			end
 		end
 		G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.2, func = function()
