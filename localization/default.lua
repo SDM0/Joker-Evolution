@@ -188,7 +188,7 @@ return {
                 name = "Evolution",
                 text = {
                     "Evolve {C:attention}#2#{} card",
-                    "this run",
+                    "while owning this Joker",
                     "{C:inactive}({C:attention}#1#{C:inactive}/#2#)"
                 }
             },
