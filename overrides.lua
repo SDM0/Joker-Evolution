@@ -54,12 +54,18 @@ function Card:calculate_joker(context)
 	return ret
 end
 
+local add_to_deckref = Card.add_to_deck
+function Card:add_to_deck(from_debuff)
+	add_to_deckref(self, from_debuff)
+	self:add_to_deck_evo(from_debuff)
+	return self:check_evo_condition()
+end
+
 local generate_UIBox_ability_tableref = Card.generate_UIBox_ability_table
 function Card:generate_UIBox_ability_table(vars_only)
 	Evolution_tooltip_object = self
 	return generate_UIBox_ability_tableref(self, vars_only)
 end
-
 
 local level_up_handref = level_up_hand
 function level_up_hand(card, hand, instant, amount)

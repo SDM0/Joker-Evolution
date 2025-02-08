@@ -29,23 +29,34 @@ function is_evo(c)
 	return false
 end
 
+function Card:check_evo_condition()
+	local evol = get_card_evolution(self)
+	if evol and (self.ability.amount and self.ability.amount >= evol.amount) and not self.ability.can_evolve then
+		self.ability.can_evolve = true
+	end
+end
+
+function Card:increment_evo_condition(amount)
+	local amount = amount or 1
+	if self.ability.amount then
+		self.ability.amount = self.ability.amount + amount
+		self:check_evo_condition()
+	end
+end
+
 function Card:decrement_evo_condition(amount)
 	local amount = amount or 1
 	if self.ability.amount then
 		self.ability.amount = self.ability.amount - amount
-		if self.ability.amount <= 0 and not self.ability.can_evolve then
-			self.ability.can_evolve = true
-		end
+		self:check_evo_condition()
 	end
 end
 
 function Card:set_evo_condition(amount)
-	local amount = amount or 1
+	local amount = amount or ((self.ability and self.ability.amount) or 0)
 	if self.ability.amount then
 		self.ability.amount = amount
-		if self.ability.amount <= 0 and not self.ability.can_evolve then
-			self.ability.can_evolve = true
-		end
+		self:check_evo_condition()
 	end
 end
 
@@ -192,6 +203,21 @@ function Card:calculate_evo(context)
 	end
 end
 
+function Card:add_to_deck_evo(from_debuff)
+	if get_card_evolution(self) then
+		local obj = self.config.center
+		local evol = get_card_evolution(self)
+		if not obj.add_to_deck_evo and G.P_CENTERS[evol.evo].add_to_deck_evo then
+			obj.add_to_deck_evo = G.P_CENTERS[evol.evo].add_to_deck_evo
+		end
+		if obj and obj.add_to_deck_evo and type(obj.add_to_deck_evo) == 'function' then
+			local o = obj:add_to_deck_evo(self, from_debuff)
+			if o then return o end
+		end
+		self:check_evo_condition()
+	end
+end
+
 function set_evo_tooltip(_c)
 	for _, joker in ipairs(JokerEvolution.evolutions) do
 		if _c.key == joker.key then
@@ -201,7 +227,7 @@ function set_evo_tooltip(_c)
 					if G.jokers.cards[i] == Evolution_tooltip_object then my_pos = i; break end
 				end
 				if my_pos and (G.jokers.cards[my_pos].ability and G.jokers.cards[my_pos].ability.amount) then
-					return {key = "je_" .. joker.key, set = "Other", vars = {joker.amount - math.max(G.jokers.cards[my_pos].ability.amount, 0), joker.amount}}
+					return {key = "je_" .. joker.key, set = "Other", vars = {math.min(G.jokers.cards[my_pos].ability.amount, joker.amount), joker.amount}}
 				end
 			end
 			return {key = "je_" .. joker.key, set = "Other", vars = {0, joker.amount}}
