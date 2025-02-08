@@ -25,7 +25,7 @@ payload = """
 evo = get_card_evolution(self)
 if self.ability.set == "Joker" and evo then
 	self.ability.can_evolve = false
-    self.ability.amount = evo.amount
+    self.ability.amount = 0
 end
 """
 match_indent = true

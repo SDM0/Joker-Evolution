@@ -26,10 +26,10 @@ SMODS.Joker{
 		end
 	end,
 	-- "calculate_evo" works like "calculate_joker"
-	-- but instead of returning something you use it to decrement the condition
+	-- but instead of returning something you use it to increment the condition
 	calculate_evo = function(self, card, context)
 		if context.end_of_round and not (context.individual or context.repetition) and G.GAME.blind.boss then
-			card:decrement_evo_condition()	--Helper function from "JokerEvolution" to decrement the requirement count
+			card:increment_evo_condition()	--Helper function from "JokerEvolution" to increment the requirement count
 		end
 	end,
 	atlas = "je_jokers"

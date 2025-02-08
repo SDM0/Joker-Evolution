@@ -39,7 +39,7 @@ SMODS.Joker{
 	end,
 	calculate_evo = function(self, card, context)
 		if context.je_level_up then
-			card:decrement_evo_condition()
+			card:increment_evo_condition()
 		end
 	end,
 	atlas = "je_jokers"
@@ -84,7 +84,7 @@ SMODS.Joker{
 	end,
 	calculate_evo = function(self, card, context)
 		if context.joker_main and next(context.poker_hands[card.ability.extra.poker_hand]) then
-			card:decrement_evo_condition()
+			card:increment_evo_condition()
 		end
 	end,
 	atlas = "je_jokers",
@@ -119,7 +119,7 @@ SMODS.Joker{
 	end,
 	calculate_evo = function(self, card, context)
 		if context.reroll_shop then
-			card:decrement_evo_condition()
+			card:increment_evo_condition()
 		end
 	end,
 	atlas = "je_jokers"
@@ -163,9 +163,12 @@ SMODS.Joker{
             end
 		end
 	end,
+	add_to_deck_evo = function(self, card, from_debuff)
+		card:set_evo_condition((G.GAME and G.GAME.evolution_total or 0))
+	end,
 	calculate_evo = function(self, card, context)
 		if context.evolution then
-			card:decrement_evo_condition()
+			card:increment_evo_condition()
 		end
 	end,
 	atlas = "je_jokers",
@@ -210,7 +213,7 @@ SMODS.Joker{
 	end,
 	calculate_evo = function(self, card, context)
 		if context.end_of_round and not (context.individual or context.repetition) and G.GAME.blind.boss then
-			card:decrement_evo_condition()
+			card:increment_evo_condition()
 		end
 	end,
 	atlas = "je_jokers",
@@ -251,7 +254,7 @@ SMODS.Joker{
 	calculate_evo = function(self, card, context)
 		if context.using_consumeable then
 			if context.consumeable.ability.set == "Tarot" then
-				card:decrement_evo_condition()
+				card:increment_evo_condition()
 			end
 		end
 	end,
@@ -303,7 +306,7 @@ SMODS.Joker{
 	calculate_evo = function(self, card, context)
 		if context.cardarea == G.jokers then
 			if context.after and G.GAME.chips + hand_chips * mult > G.GAME.blind.chips * 2 then
-				card:decrement_evo_condition()
+				card:increment_evo_condition()
 			end
 		end
 	end,
@@ -347,7 +350,7 @@ SMODS.Joker{
 	calculate_evo = function(self, card, context)
 		if context.cardarea == G.play then
 			if context.individual and not context.other_card.debuff then
-				card:decrement_evo_condition()
+				card:increment_evo_condition()
 			end
 		end
 	end,
@@ -385,7 +388,7 @@ SMODS.Joker{
 	calculate_evo = function(self, card, context)
 		if context.individual and not context.end_of_round and context.cardarea == G.play then
 			if not context.other_card.debuff and context.other_card:get_id() == 9 then
-				card:decrement_evo_condition()
+				card:increment_evo_condition()
 			end
 		end
 	end,
@@ -434,7 +437,7 @@ SMODS.Joker{
 	end,
 	calculate_evo = function(self, card, context)
 		if context.skip_blind then
-			card:decrement_evo_condition()
+			card:increment_evo_condition()
 		end
 	end,
 	atlas = "je_jokers",
@@ -474,7 +477,7 @@ SMODS.Joker{
 	end,
 	calculate_evo = function(self, card, context)
 		if context.selling_card then
-			card:decrement_evo_condition()
+			card:increment_evo_condition()
 		end
 	end,
 	atlas = "je_jokers",
@@ -505,7 +508,7 @@ SMODS.Joker{
 	end,
 	calculate_evo = function(self, card, context)
 		if context.end_of_round and not (context.individual or context.repetition) and G.GAME.current_round.hands_left == 0 then
-			card:decrement_evo_condition()
+			card:increment_evo_condition()
 		end
 	end,
 	atlas = "je_jokers",
@@ -536,7 +539,7 @@ SMODS.Joker{
 	end,
 	calculate_evo = function(self, card, context)
 		if context.playing_card_added then
-			card:decrement_evo_condition()
+			card:increment_evo_condition()
 		end
 	end,
 	update = function(self, card, dt)
@@ -576,7 +579,7 @@ SMODS.Joker{
 	end,
 	calculate_evo = function(self, card, context)
 		if context.end_of_round and not (context.individual or context.repetition) and G.GAME.current_round.discards_used == 0 then
-			card:decrement_evo_condition()
+			card:increment_evo_condition()
 		end
 	end,
 	atlas = "je_jokers",
@@ -612,7 +615,7 @@ SMODS.Joker{
 		if context.joker_main then
 			local _,_,_,scoring_hand,_ = G.FUNCS.get_poker_hand_info(G.play.cards)
 			if #context.scoring_hand > #scoring_hand then
-				card:decrement_evo_condition()
+				card:increment_evo_condition()
 			end
 		end
 	end,
