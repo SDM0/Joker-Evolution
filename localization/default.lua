@@ -13,8 +13,8 @@ return {
             j_evo_rendezvous = {
                 name = "Rendez-Vous",
                 text = {
-                    "If {C:attention}poker hand{} is a",
-                    "{C:attention}#1#{}, create a",
+                    "If {C:attention}poker hand{} contains",
+                    "a {C:attention}#1#{}, create a",
                     "random {C:spectral}Spectral{} card",
                     "{C:inactive}(Must have room)"
                 }
@@ -188,7 +188,7 @@ return {
                 name = "Evolution",
                 text = {
                     "Evolve {C:attention}#2#{} card",
-                    "while owning this Joker",
+                    "this run",
                     "{C:inactive}({C:attention}#1#{C:inactive}/#2#)"
                 }
             },
