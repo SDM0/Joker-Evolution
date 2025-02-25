@@ -7,7 +7,7 @@
 --- BADGE_COLOUR: 18cadc
 --- DISPLAY_NAME: Joker Evolution
 --- PREFIX: evo
---- VERSION: 1.2.3a
+--- VERSION: 1.2.3b
 --- DEPENDENCIES: [Steamodded>=1.0.0~ALPHA-1030f]
 
 ----------------------------------------------
