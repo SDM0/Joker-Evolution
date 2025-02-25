@@ -89,13 +89,12 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
-pattern = "scoring_hand[i] = G.play.cards[i]"
+pattern = "local splashed = SMODS.always_scores(G.play.cards[i]) or next(find_joker('Splash'))"
 position = "after"
 payload = """
-        elseif next(find_joker('Ripple')) then
-            scoring_hand[i] = G.play.cards[i]
+splashed = splashed or next(SMODS.find_card('j_evo_ripple'))
 """
-match_indent = false
+match_indent = true
 
 # Pre-evo removed from pool if its evolution exists
 [[patches]]
